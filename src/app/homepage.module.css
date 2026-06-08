@@ -1,0 +1,569 @@
+/* =============================================================================
+   Booking.com Inspired Homepage Style for Randevigo
+   ============================================================================= */
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-deep);
+}
+
+/* Navbar */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.navInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loginBtn {
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.loginBtn:hover {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+}
+
+.signupBtn {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.signupBtn:hover {
+  background-color: var(--accent-primary-hover);
+}
+
+/* User Profile Dropdown */
+.profileContainer {
+  position: relative;
+}
+
+.profileBtn {
+  background: var(--bg-default);
+  border: 1px solid var(--border-subtle);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.profileBtn:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--accent-primary);
+}
+
+.avatar {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.dropdownMenu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background-color: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  width: 240px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: slideIn 0.2s ease;
+  z-index: 110;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownHeader {
+  padding: 1rem;
+  background-color: var(--bg-deep);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.userName {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.userEmail {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0,0,0,0.02);
+}
+
+.dropdownItem:hover {
+  background-color: var(--bg-default);
+  color: var(--accent-primary);
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.logoutItem {
+  color: #dc2626 !important;
+}
+
+.logoutItem:hover {
+  background-color: #fef2f2;
+}
+
+/* Banner / Hero Section */
+.heroSection {
+  background: linear-gradient(135deg, var(--text-primary) 0%, #047857 100%);
+  color: #ffffff;
+  padding: 4rem 2rem 6rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.heroSubtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+/* Search Bar (Booking.com style) */
+.searchBarWrapper {
+  max-width: 1000px;
+  width: 90%;
+  margin: -2.5rem auto 0 auto;
+  z-index: 10;
+  position: relative;
+}
+
+.searchBar {
+  background-color: #febb02; /* Booking.com yellow highlight border */
+  border-radius: var(--radius-md);
+  padding: 4px;
+  display: flex;
+  gap: 4px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  align-items: stretch;
+}
+
+/* Korunacak renk seçimi için sarıyı yeşil/mavi kenarlıkla kombine etme veya yeşile çevirme */
+.searchBar {
+  background-color: var(--accent-primary); /* Randevigo primary green as frame */
+}
+
+.searchField {
+  background-color: #ffffff;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.searchFieldIcon {
+  font-size: 1.2rem;
+  opacity: 0.6;
+}
+
+.searchField input, .searchField select {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.searchField input::placeholder {
+  color: var(--text-muted);
+}
+
+.searchBtn {
+  background-color: var(--accent-secondary);
+  color: #ffffff;
+  border: none;
+  outline: none;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0 2rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchBtn:hover {
+  background-color: #026ca3;
+}
+
+/* Main Section */
+.mainSection {
+  max-width: 1200px;
+  width: 100%;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+/* Location Question Box */
+.locationQuestionBox {
+  background-color: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-glass);
+  margin-bottom: 3rem;
+}
+
+.locationQuestionTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.locationButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.locationBtn {
+  background-color: var(--bg-default);
+  border: 1px solid var(--border-subtle);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  color: var(--text-secondary);
+}
+
+.locationBtn:hover, .locationBtnActive {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.locationBtnActive {
+  background-color: var(--accent-primary) !important;
+  color: #ffffff !important;
+  border-color: var(--accent-primary) !important;
+}
+
+/* Results Title */
+.sectionTitle {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.sectionSubtitle {
+  color: var(--text-secondary);
+  margin-top: -1rem;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+/* Tenant Cards Grid (Booking.com style: List layout or Grid layout)
+   Booking.com usually uses list layout for hotels/accommodations.
+   Let's design elegant list cards for maximum premium feel! */
+.tenantsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tenantCard {
+  background-color: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tenantCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.tenantImageWrapper {
+  width: 260px;
+  min-width: 260px;
+  position: relative;
+  background-color: var(--bg-default);
+}
+
+.tenantImage {
+  object-fit: cover;
+}
+
+.tenantDetails {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tenantMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.tenantInfoBlock {
+  flex: 1;
+}
+
+.tenantCategory {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.tenantName {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.tenantAddress {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.tenantDesc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.tenantRightBlock {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.tenantRatingRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ratingLabel {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.ratingBadge {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-sm) var(--radius-sm) var(--radius-sm) 0;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.tenantActionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.tenantContact {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.bookButton {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.bookButton:hover {
+  background-color: var(--accent-primary-hover);
+  color: #ffffff;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.emptyState h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+/* Footer */
+.footer {
+  margin-top: auto;
+  background-color: #ffffff;
+  border-top: 1px solid var(--border-subtle);
+  padding: 1.5rem 2rem;
+}
+
+.footerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .searchBar {
+    flex-direction: column;
+    padding: 8px;
+  }
+  
+  .searchField {
+    padding: 0.6rem;
+  }
+  
+  .searchBtn {
+    padding: 0.75rem;
+  }
+  
+  .tenantCard {
+    flex-direction: column;
+  }
+  
+  .tenantImageWrapper {
+    width: 100%;
+    height: 180px;
+    min-width: 100%;
+  }
+  
+  .tenantMain {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .tenantRightBlock {
+    align-items: flex-start;
+    text-align: left;
+  }
+  
+  .tenantActionRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .bookButton {
+    text-align: center;
+  }
+}

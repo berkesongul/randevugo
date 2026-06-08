@@ -1,0 +1,80 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-deep);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.logoContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: logoIntro 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.logo {
+  width: 260px;
+  max-width: 80vw;
+  height: auto;
+  object-fit: contain;
+  /* subtle glow directly on the image */
+  filter: drop-shadow(0 0 20px rgba(120, 80, 255, 0.2));
+  z-index: 2;
+}
+
+/* Background pulse glowing effect */
+.glow {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0;
+  animation: pulseGlow 2.5s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+@keyframes logoIntro {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(1.5);
+  }
+}
