@@ -4,15 +4,20 @@
 // Signup Page
 // =============================================================================
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from '../login/login.module.css';
 import type { UserRole } from '@/types/types';
 
-export default function SignupPage() {
-  const [role, setRole] = useState<UserRole>('client'); // default to client
+function SignupContent() {
+  const searchParams = useSearchParams();
+  const initialRole = searchParams.get('role');
+  const [role, setRole] = useState<UserRole>(
+    initialRole === 'owner' ? 'owner' : 'client'
+  );
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,12 +32,13 @@ export default function SignupPage() {
     setIsLoading(true);
     setError(null);
 
-    const { data: authData, error: authError } = await supabase.auth.signUp({
+    const { error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           full_name: fullName,
+          role,
         },
       },
     });
@@ -41,18 +47,6 @@ export default function SignupPage() {
       setError(authError.message);
       setIsLoading(false);
       return;
-    }
-
-    // Update the profile role immediately after signup
-    if (authData.user) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ role })
-        .eq('id', authData.user.id);
-        
-      if (profileError) {
-        console.error("Profil rolü güncellenirken hata oluştu:", profileError);
-      }
     }
 
     setSuccess(true);
@@ -71,12 +65,12 @@ export default function SignupPage() {
         <div className={styles.card}>
           <div className={styles.logo}>
             <Image
-              src="/images/randevigo-logo.png"
+              src="/images/randevigo-logo.svg"
               alt="Randevigo Logo"
               width={220}
-              height={80}
+              height={120}
               priority
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: 'contain', height: 'auto' }}
             />
             <p>Kayıt başarılı!</p>
           </div>
@@ -107,12 +101,12 @@ export default function SignupPage() {
       <div className={styles.card}>
         <div className={styles.logo}>
           <Image
-            src="/images/randevigo-logo.png"
+            src="/images/randevigo-logo.svg"
             alt="Randevigo Logo"
             width={220}
-            height={80}
+            height={120}
             priority
-            style={{ objectFit: 'contain' }}
+            style={{ objectFit: 'contain', height: 'auto' }}
           />
           <p>Yeni Hesap Oluşturun</p>
         </div>
@@ -209,14 +203,28 @@ export default function SignupPage() {
         <div className={styles.footer}>
           <p style={{ marginBottom: '1rem' }}>
             Zaten hesabınız var mı?{' '}
-            <a href="/login">Giriş Yap</a>
+            <Link href="/login">Giriş Yap</Link>
           </p>
           <div style={{ opacity: 0.5, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
-             <Image src="/images/randevigo-logo.png" alt="Randevigo Logo" width={80} height={30} style={{ objectFit: 'contain' }} />
+             <Image src="/images/randevigo-logo.svg" alt="Randevigo Logo" width={80} height={44} style={{ objectFit: 'contain', height: 'auto' }} />
              <span>© 2026</span>
           </div>
         </div>
       </div>
     </main>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={
+      <main className={styles.container}>
+        <div style={{ color: 'white', textAlign: 'center', padding: '4rem' }}>
+          <h2>Yükleniyor...</h2>
+        </div>
+      </main>
+    }>
+      <SignupContent />
+    </Suspense>
   );
 }

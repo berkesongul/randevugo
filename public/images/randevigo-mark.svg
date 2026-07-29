@@ -1,0 +1,17 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="35 718 430 318" width="430" height="318" role="img" aria-label="Randevigo icon">
+  <style>
+    .s0 { fill: none; stroke: #111827; stroke-miterlimit: 10; stroke-width: 20; }
+    .s1 { fill: none; stroke: #00b5ec; stroke-miterlimit: 10; stroke-width: 17.1; }
+  </style>
+  <g>
+    <path class="s0" d="m194.01 945.6v-128.72c0-25.3 17.71-45.81 39.56-45.81h158.2c21.85 0 39.55 20.51 39.55 45.81v24l-231.65 0.55"/>
+    <path class="s0" d="m250.99 739.43v57.27"/>
+    <path class="s0" d="m375.33 736.7v57.27"/>
+    <path class="s0" d="m389.43 945.6c0 38.95-31.57 70.52-70.51 70.52-38.95 0-70.52-31.57-70.52-70.52 0-38.94 31.57-70.51 70.52-70.51 38.94 0 70.51 31.57 70.51 70.51z"/>
+    <path class="s0" d="m284.84 922.96l31.5 35.02 36.65-46.48"/>
+    <path class="s1" d="m97.45 898.86h67.91"/>
+    <path class="s1" d="m136.53 1013.11h67.9"/>
+    <path class="s1" d="m165.36 937.04h-130.36"/>
+    <path class="s1" d="m204.43 975.22h-130.36"/>
+  </g>
+</svg>

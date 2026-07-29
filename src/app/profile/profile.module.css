@@ -1,319 +1,616 @@
-/* =============================================================================
-   Profile Management Pages CSS Module
-   ============================================================================= */
-
 .container {
-  width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-deep);
+  color: var(--brand-900);
+  background:
+    radial-gradient(circle at 92% 4%, rgba(3, 152, 152, 0.12), transparent 27rem),
+    #fbfdfe;
 }
 
-/* Navbar */
-.navbar {
-  background-color: #ffffff;
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 1rem 2rem;
-}
-
-.navInner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Layout Grid */
-.layoutGrid {
-  max-width: 1200px;
-  width: 100%;
-  margin: 2rem auto;
-  padding: 0 2rem;
+.loadingPage {
+  min-height: 100vh;
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 2rem;
-  flex: 1;
-}
-
-/* Sidebar Navigation */
-.sidebar {
-  background-color: #ffffff;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.sidebarTitle {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.sidebarLink {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-weight: 600;
-  transition: all 0.2s;
-  font-size: 0.95rem;
-}
-
-.sidebarLink:hover {
-  background-color: var(--bg-default);
-  color: var(--accent-primary);
-}
-
-.sidebarLinkActive {
-  background-color: var(--accent-primary);
-  color: #ffffff !important;
-}
-
-.sidebarLinkActive:hover {
-  background-color: var(--accent-primary-hover);
-}
-
-/* Main Content Panel */
-.mainPanel {
-  background-color: #ffffff;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 2rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-}
-
-.panelTitle {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-}
-
-/* Form Styling */
-.formGroup {
-  margin-bottom: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.formGroup label {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.formGroup input {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  outline: none;
-  font-size: 0.95rem;
-  transition: border-color 0.2s;
-  background-color: var(--bg-deep);
-}
-
-.formGroup input:focus {
-  border-color: var(--accent-primary);
-  background-color: #ffffff;
-}
-
-.formGroup input[disabled] {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.submitBtn {
-  background-color: var(--accent-primary);
-  color: #ffffff;
-  border: none;
-  outline: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  align-self: flex-start;
-  margin-top: 1rem;
-}
-
-.submitBtn:hover {
-  background-color: var(--accent-primary-hover);
-}
-
-.submitBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Status messages */
-.successMsg {
-  color: #059669;
-  background-color: #ecfdf5;
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-.errorMsg {
-  color: #dc2626;
-  background-color: #fef2f2;
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-/* Appointment Cards */
-.appointmentsList {
-  display: flex;
-  flex-direction: column;
+  place-content: center;
+  justify-items: center;
   gap: 1rem;
-}
-
-.aptCard {
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: box-shadow 0.2s;
-}
-
-.aptCard:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
-
-.aptMain {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.aptTenant {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.aptService {
-  font-size: 0.9rem;
   color: var(--text-secondary);
+  background: #fbfdfe;
 }
 
-.aptTime {
-  font-size: 0.85rem;
-  color: var(--text-muted);
+.loadingMark {
+  width: 38px;
+  height: 38px;
+  border: 3px solid #dceae3;
+  border-top-color: var(--accent-secondary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-.aptRight {
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.accountShell {
+  width: min(var(--page-max), calc(100% - (var(--page-gutter) * 2)));
+  margin: 0 auto;
+  padding: 3rem 0 5rem;
+}
+
+.accountHero {
   display: flex;
-  flex-direction: column;
   align-items: flex-end;
-  gap: 0.75rem;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
 
-.statusBadge {
-  padding: 0.35rem 0.75rem;
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 700;
+.accountHero > div > span,
+.panelEyebrow {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  color: var(--accent-primary);
+  font-size: 0.74rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
-.status_pending {
-  background-color: #fef3c7;
-  color: #d97706;
+.accountHero h1 {
+  margin: 0 0 0.55rem;
+  font-size: clamp(2rem, 4vw, 3.15rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
 }
 
-.status_confirmed {
-  background-color: #d1fae5;
-  color: #059669;
+.accountHero p,
+.panelDescription {
+  max-width: 620px;
+  margin: 0;
+  color: #687c73;
+  line-height: 1.65;
 }
 
-.status_cancelled {
-  background-color: #fee2e2;
-  color: #dc2626;
+.accountHero > a {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.1rem;
+  color: #fff;
+  border-radius: 14px;
+  background: var(--accent-secondary);
+  box-shadow: 0 10px 24px rgba(0, 140, 183, 0.18);
+  font-size: 0.86rem;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
-.status_completed {
-  background-color: #e0f2fe;
-  color: #0284c7;
+.accountHero > a:hover {
+  color: #fff;
 }
 
-.cancelBtn {
-  background-color: transparent;
-  color: #dc2626;
-  border: 1px solid #fee2e2;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
+.layoutGrid {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
 }
 
-.cancelBtn:hover {
-  background-color: #fef2f2;
+.sidebar,
+.mainPanel {
+  border: 1px solid rgba(34, 84, 64, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 50px rgba(18, 49, 58, 0.07);
 }
 
-/* User Card info in layout */
+.sidebar {
+  position: sticky;
+  top: 100px;
+  padding: 1rem;
+}
+
 .userMetaSummary {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 1rem 0;
-  text-align: center;
-  border-bottom: 1px solid var(--border-subtle);
-  margin-bottom: 1rem;
+  gap: 0.8rem;
+  padding: 0.55rem 0.55rem 1.15rem;
+  border-bottom: 1px solid #e3eef2;
 }
 
 .metaAvatar {
-  width: 60px;
-  height: 60px;
-  background-color: var(--accent-primary);
-  color: #ffffff;
-  border-radius: 50%;
-  font-size: 1.75rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.75rem;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  border-radius: 17px;
+  background: linear-gradient(145deg, #173e30, #4cab83);
+  font-size: 1.1rem;
+  font-weight: 900;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+.userMetaSummary > div:last-child {
+  min-width: 0;
+}
+
+.userMetaSummary strong,
+.userMetaSummary small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userMetaSummary strong {
+  font-size: 0.9rem;
+}
+
+.userMetaSummary small {
+  margin-top: 0.22rem;
+  color: #83928b;
+  font-size: 0.7rem;
+}
+
+.sidebarNav {
+  display: grid;
+  gap: 0.3rem;
+  padding-top: 1rem;
+}
+
+.sidebarLink {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem;
+  color: #60756b;
+  border-radius: 14px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebarLink:hover {
+  color: #244b3c;
+  background: #f1f7f4;
+}
+
+.sidebarLinkActive {
+  color: #1d4938;
+  background: #e9f5ef;
+}
+
+.navIcon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  color: #438e6f;
+  border: 1px solid #d8e9e0;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.sidebarLink strong,
+.sidebarLink small {
+  display: block;
+}
+
+.sidebarLink strong {
+  font-size: 0.82rem;
+}
+
+.sidebarLink small {
+  margin-top: 0.18rem;
+  color: #899790;
+  font-size: 0.67rem;
+}
+
+.navArrow {
+  font-size: 1.2rem;
+}
+
+.mainPanel {
+  min-height: 570px;
+  padding: clamp(1.35rem, 3vw, 2.5rem);
+}
+
+.panelHeader {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e3eef2;
+}
+
+.panelTitle {
+  margin: 0 0 0.55rem;
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
+  letter-spacing: -0.035em;
+}
+
+.panelDescription {
+  font-size: 0.88rem;
+}
+
+.formCard,
+.securityCard {
+  margin-top: 1.5rem;
+  padding: 1.35rem;
+  border: 1px solid #e1ebe6;
+  border-radius: 18px;
+  background: #fbfdfe;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.formGroup {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.formGroupWide {
+  grid-column: 1 / -1;
+}
+
+.formGroup label {
+  color: #294c3f;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.formGroup small {
+  color: #87958e;
+  font-size: 0.68rem;
+}
+
+.formGroup input {
+  width: 100%;
+  min-height: 50px;
+  padding: 0.75rem 0.9rem;
+  color: var(--brand-900);
+  border: 1px solid #dbe7e1;
+  border-radius: 13px;
+  outline: 0;
+  background: #fff;
+  font: inherit;
+}
+
+.formGroup input:focus {
+  border-color: #4ba981;
+  box-shadow: 0 0 0 4px rgba(3, 152, 152, 0.12);
+}
+
+.formGroup input:disabled {
+  color: #7f9088;
+  background: #f1f5f3;
+  cursor: not-allowed;
+}
+
+.formActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid #e7eeea;
+}
+
+.submitBtn {
+  min-height: 48px;
+  padding: 0.7rem 1.15rem;
+  color: #fff;
+  border: 0;
+  border-radius: 13px;
+  background: var(--accent-secondary);
+  box-shadow: 0 8px 20px rgba(46, 132, 96, 0.15);
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.submitBtn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.successMsg,
+.errorMsg {
+  margin: 1.15rem 0 0;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.successMsg {
+  color: #246a4e;
+  background: #e8f7ef;
+}
+
+.errorMsg {
+  color: #9d3b3b;
+  background: #fff0f0;
+}
+
+.appointmentsList {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.aptCard {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #e1ebe6;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.aptDate {
+  min-height: 72px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  color: var(--accent-primary);
+  border-radius: 15px;
+  background: #eaf6f0;
+}
+
+.aptDate strong {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.aptDate span {
+  margin-top: 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.aptMain {
+  min-width: 0;
+}
+
+.aptTenant {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.aptService,
+.aptTime {
+  color: #6e8278;
+  font-size: 0.76rem;
+}
+
+.aptService {
+  margin-top: 0.32rem;
+}
+
+.aptTime {
+  margin-top: 0.55rem;
+}
+
+.aptRight {
+  display: grid;
+  justify-items: end;
+  gap: 0.7rem;
+}
+
+.statusBadge {
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.status_pending {
+  color: #8b6200;
+  background: #fff6d8;
+}
+
+.status_confirmed {
+  color: #237453;
+  background: #dff5e9;
+}
+
+.status_cancelled {
+  color: #ad4747;
+  background: #ffebeb;
+}
+
+.status_completed {
+  color: #3f657a;
+  background: #e9f4f8;
+}
+
+.cancelBtn {
+  padding: 0;
+  color: #ad4747;
+  border: 0;
+  background: transparent;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.emptyState {
+  min-height: 310px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  color: var(--accent-primary);
+  border-radius: 18px;
+  background: #eaf6f0;
+  font-weight: 900;
+}
+
+.emptyState h2 {
+  margin: 1rem 0 0.4rem;
+  font-size: 1.1rem;
+}
+
+.emptyState p {
+  max-width: 430px;
+  margin: 0;
+  color: #71857b;
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+.emptyState a {
+  margin-top: 1rem;
+  color: #318261;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.securityIntro {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.securityIcon {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  display: grid;
+  place-items: center;
+  color: #357e61;
+  border-radius: 15px;
+  background: #e8f5ee;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.securityIntro h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+}
+
+.securityIntro p {
+  margin: 0;
+  color: #71857b;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.loadingText {
+  display: grid;
+  min-height: 320px;
+  place-content: center;
+  color: #71857b;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .accountHero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .layoutGrid {
     grid-template-columns: 1fr;
-    padding: 0 1rem;
   }
-  
+
+  .sidebar {
+    position: static;
+  }
+
+  .userMetaSummary {
+    display: none;
+  }
+
+  .sidebarNav {
+    grid-template-columns: repeat(4, minmax(145px, 1fr));
+    overflow-x: auto;
+    padding: 0;
+  }
+
+  .sidebarLink small,
+  .navArrow {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .accountShell {
+    width: min(100% - 1.25rem, var(--page-max));
+    padding-top: 2rem;
+  }
+
+  .accountHero > a {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .sidebar {
+    padding: 0.55rem;
+    border-radius: 18px;
+  }
+
+  .sidebarNav {
+    grid-template-columns: repeat(4, 124px);
+  }
+
+  .sidebarLink {
+    grid-template-columns: 32px minmax(0, 1fr);
+    padding: 0.55rem;
+  }
+
+  .navIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mainPanel {
+    min-height: 520px;
+    border-radius: 20px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formGroupWide {
+    grid-column: auto;
+  }
+
+  .formActions,
+  .submitBtn {
+    width: 100%;
+  }
+
   .aptCard {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
+    grid-template-columns: 56px minmax(0, 1fr);
   }
-  
+
   .aptRight {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    grid-column: 2;
+    justify-items: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadingMark {
+    animation: none;
   }
 }

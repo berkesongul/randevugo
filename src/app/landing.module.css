@@ -25,7 +25,7 @@
 .blob1 {
   width: 500px;
   height: 500px;
-  background: rgba(16, 185, 129, 0.3);
+  background: rgba(5, 143, 171, 0.3);
   top: -100px;
   left: -100px;
 }
@@ -33,7 +33,7 @@
 .blob2 {
   width: 400px;
   height: 400px;
-  background: rgba(14, 165, 233, 0.2);
+  background: rgba(0, 181, 236, 0.2);
   top: 50%;
   right: -100px;
   animation-delay: -7s;
@@ -42,7 +42,7 @@
 .blob3 {
   width: 350px;
   height: 350px;
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(0, 181, 236, 0.15);
   bottom: -50px;
   left: 40%;
   animation-delay: -14s;
@@ -97,7 +97,7 @@
 .navCta:hover {
   background: var(--accent-primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 181, 236, 0.3);
   color: white;
 }
 
@@ -155,12 +155,12 @@
   font-weight: 700;
   font-size: 1.1rem;
   transition: all 0.3s;
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 181, 236, 0.3);
 }
 
 .ctaPrimary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 181, 236, 0.4);
   background: var(--accent-primary-hover);
   color: white;
 }
@@ -178,7 +178,7 @@
 
 .ctaSecondary:hover {
   border-color: var(--accent-primary);
-  background: rgba(16, 185, 129, 0.05);
+  background: rgba(0, 181, 236, 0.05);
   transform: translateY(-3px);
   color: var(--text-primary);
 }
@@ -382,7 +382,7 @@
   margin: 0 auto;
   padding: 4rem 2rem;
   text-align: center;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(14, 165, 233, 0.1));
+  background: linear-gradient(135deg, rgba(0, 181, 236, 0.1), rgba(0, 181, 236, 0.1));
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-glow);
 }

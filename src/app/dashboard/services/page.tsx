@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useServices } from '@/hooks/useServices';
-import type { Service, ServiceInsert, ServiceUpdate } from '@/types/types';
+import type { Service } from '@/types/types';
 import styles from './services.module.css';
 
 export default function ServicesPage() {
@@ -234,4 +234,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-

@@ -1,9 +1,5 @@
 'use client';
 
-// =============================================================================
-// Profile Settings Page — /profile/settings
-// =============================================================================
-
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import styles from '../profile.module.css';
@@ -14,11 +10,10 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
   const supabase = createClient();
 
-  async function handlePasswordChange(e: React.FormEvent) {
-    e.preventDefault();
+  async function handlePasswordChange(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setSuccess(null);
     setError(null);
 
@@ -33,15 +28,14 @@ export default function SettingsPage() {
     }
 
     setIsSaving(true);
-
     const { error: updateError } = await supabase.auth.updateUser({
       password: newPassword,
     });
 
     if (updateError) {
-      setError('Şifre güncellenirken bir hata oluştu: ' + updateError.message);
+      setError(`Şifre güncellenirken bir hata oluştu: ${updateError.message}`);
     } else {
-      setSuccess('Şifreniz başarıyla güncellendi.');
+      setSuccess('Şifren başarıyla güncellendi.');
       setNewPassword('');
       setConfirmPassword('');
     }
@@ -49,54 +43,59 @@ export default function SettingsPage() {
   }
 
   return (
-    <div>
-      <h1 className={styles.panelTitle}>Hesap Ayarları</h1>
+    <>
+      <header className={styles.panelHeader}>
+        <span className={styles.panelEyebrow}>Hesap güvenliği</span>
+        <h1 className={styles.panelTitle}>Şifre ve güvenlik</h1>
+        <p className={styles.panelDescription}>
+          Hesabını korumak için güçlü ve yalnızca Randevigo&apos;da kullandığın bir şifre belirle.
+        </p>
+      </header>
 
       {success && <div className={styles.successMsg}>{success}</div>}
       {error && <div className={styles.errorMsg}>{error}</div>}
 
-      <div style={{ marginBottom: '2rem' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
-          Şifre Değiştir
-        </h3>
-        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-          Hesabınızın güvenliği için güçlü ve benzersiz bir şifre kullanmanızı öneririz.
-        </p>
+      <form className={styles.securityCard} onSubmit={handlePasswordChange}>
+        <div className={styles.securityIntro}>
+          <span className={styles.securityIcon} aria-hidden="true">Ş</span>
+          <div>
+            <h2>Şifreni değiştir</h2>
+            <p>Yeni şifren en az 6 karakterden oluşmalı.</p>
+          </div>
+        </div>
 
-        <form onSubmit={handlePasswordChange} style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className={styles.formGrid}>
           <div className={styles.formGroup}>
-            <label htmlFor="newPassword">Yeni Şifre</label>
+            <label htmlFor="newPassword">Yeni şifre</label>
             <input
               id="newPassword"
               type="password"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Yeni şifrenizi girin"
+              onChange={(event) => setNewPassword(event.target.value)}
+              placeholder="Yeni şifreni gir"
+              autoComplete="new-password"
               required
             />
           </div>
-
           <div className={styles.formGroup}>
-            <label htmlFor="confirmPassword">Yeni Şifre (Tekrar)</label>
+            <label htmlFor="confirmPassword">Yeni şifre tekrar</label>
             <input
               id="confirmPassword"
               type="password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Yeni şifrenizi tekrar girin"
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              placeholder="Yeni şifreni tekrar gir"
+              autoComplete="new-password"
               required
             />
           </div>
-
-          <button
-            type="submit"
-            disabled={isSaving}
-            className={styles.submitBtn}
-          >
-            {isSaving ? 'Şifre Güncelleniyor...' : 'Şifreyi Güncelle'}
+        </div>
+        <div className={styles.formActions}>
+          <button type="submit" disabled={isSaving} className={styles.submitBtn}>
+            {isSaving ? 'Şifre güncelleniyor...' : 'Şifreyi güncelle'}
           </button>
-        </form>
-      </div>
-    </div>
+        </div>
+      </form>
+    </>
   );
 }

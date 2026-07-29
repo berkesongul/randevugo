@@ -153,7 +153,7 @@ export function TenantProvider({ children }: { children: ReactNode }) {
   // Initial fetch
   // -------------------------------------------------------------------------
   useEffect(() => {
-    fetchTenants();
+    void Promise.resolve().then(fetchTenants);
   }, [fetchTenants]);
 
   // -------------------------------------------------------------------------

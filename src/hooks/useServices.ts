@@ -37,7 +37,7 @@ export function useServices() {
   }, [tenant, supabase]);
 
   useEffect(() => {
-    fetchServices();
+    void Promise.resolve().then(fetchServices);
   }, [fetchServices]);
 
   const addService = async (service: Omit<ServiceInsert, 'tenant_id'>) => {

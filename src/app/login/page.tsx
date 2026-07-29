@@ -7,7 +7,9 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { getSafeRedirectPath } from '@/lib/navigation';
 import styles from './login.module.css';
 
 function LoginForm({ activeTab }: { activeTab: 'client' | 'owner' }) {
@@ -18,7 +20,7 @@ function LoginForm({ activeTab }: { activeTab: 'client' | 'owner' }) {
   
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get('redirect');
+  const redirectUrl = getSafeRedirectPath(searchParams.get('redirect'));
   const supabase = createClient();
 
   async function handleLogin(e: React.FormEvent) {
@@ -144,12 +146,12 @@ export default function LoginPage() {
       <div className={styles.card}>
         <div className={styles.logo}>
           <Image
-            src="/images/randevigo-logo.png"
+            src="/images/randevigo-logo.svg"
             alt="Randevigo Logo"
             width={220}
-            height={80}
+            height={120}
             priority
-            style={{ objectFit: 'contain' }}
+            style={{ objectFit: 'contain', height: 'auto' }}
           />
           <p>Randevu Yönetim Sistemi</p>
         </div>
@@ -178,10 +180,10 @@ export default function LoginPage() {
         <div className={styles.footer}>
           <p style={{ marginBottom: '1rem' }}>
             Hesabınız yok mu?{' '}
-            <a href="/signup">Kayıt Ol</a>
+            <Link href="/signup">Kayıt Ol</Link>
           </p>
           <div style={{ opacity: 0.5, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
-             <Image src="/images/randevigo-logo.png" alt="Randevigo Logo" width={80} height={30} style={{ objectFit: 'contain' }} />
+             <Image src="/images/randevigo-logo.svg" alt="Randevigo Logo" width={80} height={44} style={{ objectFit: 'contain', height: 'auto' }} />
              <span>© 2026</span>
           </div>
         </div>

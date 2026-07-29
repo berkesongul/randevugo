@@ -43,7 +43,7 @@
 .blob1 {
   width: 50vw;
   height: 50vw;
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(0, 181, 236, 0.15);
   top: -20vh;
   left: -10vw;
   transform-origin: center right;
@@ -52,7 +52,7 @@
 .blob2 {
   width: 60vw;
   height: 60vw;
-  background: rgba(14, 165, 233, 0.1);
+  background: rgba(0, 181, 236, 0.1);
   bottom: -30vh;
   right: -20vw;
   animation-duration: 35s;

@@ -1,0 +1,251 @@
+.card {
+  --card-accent: var(--accent-primary);
+  --card-accent-soft: #dff7ee;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(15, 45, 34, 0.1);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 10px 35px rgba(16, 45, 34, 0.06);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--card-accent) 35%, transparent);
+  box-shadow: 0 20px 45px rgba(16, 45, 34, 0.12);
+}
+
+.beauty_salon {
+  --card-accent: #db5b92;
+  --card-accent-soft: #fde8f1;
+}
+
+.clinic,
+.dental {
+  --card-accent: #2388c9;
+  --card-accent-soft: #e3f3fc;
+}
+
+.spa {
+  --card-accent: #8c67cf;
+  --card-accent-soft: #f0eafa;
+}
+
+.fitness {
+  --card-accent: #e8793f;
+  --card-accent-soft: #fcebdd;
+}
+
+.veterinary {
+  --card-accent: #668f45;
+  --card-accent-soft: #eaf3df;
+}
+
+.consulting {
+  --card-accent: #506176;
+  --card-accent-soft: #e8edf2;
+}
+
+.photography {
+  --card-accent: #6658ca;
+  --card-accent-soft: #ece9fb;
+}
+
+.education {
+  --card-accent: #c48a24;
+  --card-accent-soft: #faf0d9;
+}
+
+.link {
+  display: block;
+  min-height: 100%;
+}
+
+.link:hover {
+  color: inherit;
+}
+
+.visual {
+  position: relative;
+  min-height: 168px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--card-accent);
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.9), transparent 35%),
+    linear-gradient(135deg, var(--card-accent-soft), #f8fbfa);
+}
+
+.visual::after {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  right: -45px;
+  bottom: -85px;
+  border: 26px solid color-mix(in srgb, var(--card-accent) 12%, transparent);
+  border-radius: 50%;
+}
+
+.visualOrb {
+  position: absolute;
+  width: 82px;
+  height: 82px;
+  left: -28px;
+  top: -28px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--card-accent) 12%, transparent);
+}
+
+.categoryIcon {
+  width: 66px;
+  height: 66px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--card-accent) 16%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.categoryPill {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  padding: 0.42rem 0.7rem;
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--card-accent) 78%, #1b2b25);
+  background: rgba(255, 255, 255, 0.84);
+  font-size: 0.74rem;
+  font-weight: 750;
+  backdrop-filter: blur(8px);
+}
+
+.content {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.35rem;
+}
+
+.kicker {
+  margin-bottom: 0.35rem;
+  color: var(--card-accent);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.content h3 {
+  color: var(--brand-900);
+  font-size: 1.2rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #63736c;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(15, 45, 34, 0.08);
+}
+
+.meta span,
+.meta strong {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+}
+
+.meta span {
+  overflow: hidden;
+  color: #718079;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta strong {
+  flex: 0 0 auto;
+  color: var(--card-accent);
+}
+
+.meta svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.favoriteButton {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  color: #61716a;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 8px 20px rgba(15, 45, 34, 0.09);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: transform 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.favoriteButton:hover {
+  transform: scale(1.07);
+  color: #dc4b70;
+}
+
+.favoriteButton svg {
+  width: 19px;
+  height: 19px;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.favoriteActive {
+  color: #dc4b70;
+  background: #fff2f6;
+}
+
+.favoriteActive svg {
+  fill: currentColor;
+}
+
+@media (max-width: 640px) {
+  .visual {
+    min-height: 145px;
+  }
+
+  .content {
+    min-height: 215px;
+  }
+}

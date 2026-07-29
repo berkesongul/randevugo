@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-import Image from 'next/image';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import BusinessCard from '@/components/BusinessCard/BusinessCard';
+import PublicHeader from '@/components/PublicHeader/PublicHeader';
+import { createClient } from '@/lib/supabase/client';
+import type { PublicTenant } from '@/types/types';
 import styles from './explore.module.css';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -21,167 +23,269 @@ const CATEGORY_LABELS: Record<string, string> = {
   other: 'Diğer',
 };
 
-interface TenantCard {
-  id: string;
-  name: string;
-  slug: string;
-  city: string | null;
-  address: string | null;
-  phone: string | null;
-  description: string | null;
-  category: string | null;
-}
-
 export default function ExplorePage() {
-  const [tenants, setTenants] = useState<TenantCard[]>([]);
+  const [tenants, setTenants] = useState<PublicTenant[]>([]);
+  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [cityFilter, setCityFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
-
   const supabase = createClient();
   const router = useRouter();
 
   useEffect(() => {
-    async function fetchTenants() {
-      const { data, error } = await supabase
-        .from('tenants')
-        .select('id, name, slug, city, address, phone, description, category')
-        .order('name');
+    let active = true;
 
-      if (!error && data) {
-        setTenants(data);
+    async function fetchCatalog() {
+      const [{ data, error: catalogError }, { data: authData }] =
+        await Promise.all([
+          supabase.rpc('get_public_tenants'),
+          supabase.auth.getUser(),
+        ]);
+
+      if (!active) return;
+
+      if (catalogError) {
+        setError('İşletmeler yüklenemedi. Lütfen daha sonra tekrar deneyin.');
+      } else {
+        setTenants(data || []);
       }
+
+      const authenticated = Boolean(authData.user);
+      setIsAuthenticated(authenticated);
+
+      if (authenticated) {
+        const { data: favorites } = await supabase.rpc('get_my_favorites');
+        if (!active) return;
+        setFavoriteIds(
+          new Set((favorites || []).map((favorite) => favorite.id))
+        );
+      }
+
       setLoading(false);
     }
-    fetchTenants();
+
+    void fetchCatalog();
+    return () => {
+      active = false;
+    };
   }, [supabase]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
-    router.refresh();
-  };
-
-  // Derive unique cities from data
   const cities = useMemo(() => {
-    const set = new Set(tenants.map(t => t.city).filter(Boolean) as string[]);
-    return Array.from(set).sort();
+    const citySet = new Set(
+      tenants.map((tenant) => tenant.city).filter(Boolean) as string[]
+    );
+    return Array.from(citySet).sort((a, b) => a.localeCompare(b, 'tr'));
   }, [tenants]);
 
-  // Derive unique categories from data
   const categories = useMemo(() => {
-    const set = new Set(tenants.map(t => t.category).filter(Boolean) as string[]);
-    return Array.from(set).sort();
+    const categorySet = new Set(
+      tenants.map((tenant) => tenant.category).filter(Boolean) as string[]
+    );
+    return Array.from(categorySet).sort();
   }, [tenants]);
 
-  // Filtered tenants
-  const filtered = useMemo(() => {
-    return tenants.filter(t => {
-      const matchesSearch = !search || t.name.toLowerCase().includes(search.toLowerCase());
-      const matchesCity = !cityFilter || t.city === cityFilter;
-      const matchesCategory = !categoryFilter || t.category === categoryFilter;
+  const filteredTenants = useMemo(() => {
+    const normalizedSearch = search.trim().toLocaleLowerCase('tr-TR');
+
+    return tenants.filter((tenant) => {
+      const categoryLabel = CATEGORY_LABELS[tenant.category || 'other'];
+      const matchesSearch =
+        !normalizedSearch ||
+        tenant.name.toLocaleLowerCase('tr-TR').includes(normalizedSearch) ||
+        categoryLabel.toLocaleLowerCase('tr-TR').includes(normalizedSearch);
+      const matchesCity = !cityFilter || tenant.city === cityFilter;
+      const matchesCategory =
+        !categoryFilter || tenant.category === categoryFilter;
+
       return matchesSearch && matchesCity && matchesCategory;
     });
   }, [tenants, search, cityFilter, categoryFilter]);
 
+  async function handleFavorite(tenantId: string) {
+    if (!isAuthenticated) {
+      router.push('/login?redirect=/explore');
+      return;
+    }
+
+    const shouldFavorite = !favoriteIds.has(tenantId);
+    setFavoriteIds((current) => {
+      const next = new Set(current);
+      if (shouldFavorite) next.add(tenantId);
+      else next.delete(tenantId);
+      return next;
+    });
+
+    const { error: favoriteError } = await supabase.rpc('set_favorite', {
+      p_tenant_id: tenantId,
+      p_is_favorite: shouldFavorite,
+    });
+
+    if (favoriteError) {
+      setFavoriteIds((current) => {
+        const next = new Set(current);
+        if (shouldFavorite) next.delete(tenantId);
+        else next.add(tenantId);
+        return next;
+      });
+      setError('Favori tercihi kaydedilemedi.');
+    } else {
+      setError(null);
+    }
+  }
+
+  const hasFilters = Boolean(search || cityFilter || categoryFilter);
+
   return (
-    <div className={styles.container}>
-      {/* Top bar */}
-      <div className={styles.topbar}>
-        <div className={styles.topbarLeft}>
-          <Image
-            src="/images/randevigo-logo.png"
-            alt="Randevigo"
-            width={120}
-            height={40}
-            style={{ objectFit: 'contain' }}
-          />
-        </div>
-        <div className={styles.topbarRight}>
-          <button onClick={handleLogout} className={styles.logoutBtn}>
-            Çıkış Yap
-          </button>
-        </div>
-      </div>
+    <div className={styles.page}>
+      <PublicHeader />
 
-      {/* Filters */}
-      <div className={styles.filters}>
-        <input
-          type="text"
-          placeholder="İşletme ara..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className={styles.searchInput}
-        />
-        <select
-          value={cityFilter}
-          onChange={(e) => setCityFilter(e.target.value)}
-          className={styles.filterSelect}
-        >
-          <option value="">Tüm Şehirler</option>
-          {cities.map(city => (
-            <option key={city} value={city}>{city}</option>
-          ))}
-        </select>
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className={styles.filterSelect}
-        >
-          <option value="">Tüm Kategoriler</option>
-          {categories.map(cat => (
-            <option key={cat} value={cat}>{CATEGORY_LABELS[cat] || cat}</option>
-          ))}
-        </select>
-      </div>
+      <section className={styles.hero}>
+        <div>
+          <span>Randevigo kataloğu</span>
+          <h1>Aradığın hizmete uygun işletmeyi keşfet.</h1>
+          <p>
+            Kategori ve konuma göre filtrele; hizmet detaylarını inceleyip
+            randevunu birkaç adımda oluştur.
+          </p>
+        </div>
+        <div className={styles.heroMark} aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-4-4" />
+          </svg>
+        </div>
+      </section>
 
-      {/* Grid */}
-      <div className={styles.grid}>
-        {loading ? (
-          <div className={styles.empty}>
-            <p>Yükleniyor...</p>
+      <main className={styles.main}>
+        <section className={styles.filterPanel} aria-label="İşletme filtreleri">
+          <label className={styles.searchField}>
+            <span>İşletme veya hizmet ara</span>
+            <div>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-4-4" />
+              </svg>
+              <input
+                type="search"
+                placeholder="Örn. berber, klinik..."
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+            </div>
+          </label>
+
+          <label className={styles.selectField}>
+            <span>Şehir</span>
+            <select
+              value={cityFilter}
+              onChange={(event) => setCityFilter(event.target.value)}
+            >
+              <option value="">Tüm şehirler</option>
+              {cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className={styles.selectField}>
+            <span>Kategori</span>
+            <select
+              value={categoryFilter}
+              onChange={(event) => setCategoryFilter(event.target.value)}
+            >
+              <option value="">Tüm kategoriler</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {CATEGORY_LABELS[category] || category}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {hasFilters && (
+            <button
+              type="button"
+              className={styles.clearButton}
+              onClick={() => {
+                setSearch('');
+                setCityFilter('');
+                setCategoryFilter('');
+              }}
+            >
+              Temizle
+            </button>
+          )}
+        </section>
+
+        <div className={styles.resultsHeader}>
+          <div>
+            <span>{filteredTenants.length} sonuç</span>
+            <h2>
+              {cityFilter
+                ? `${cityFilter} şehrindeki işletmeler`
+                : 'Tüm işletmeler'}
+            </h2>
           </div>
-        ) : filtered.length === 0 ? (
+          {!isAuthenticated && (
+            <p>
+              Favorilerini kaydetmek için{' '}
+              <Link href="/login?redirect=/explore">giriş yap</Link>.
+            </p>
+          )}
+        </div>
+
+        {error && <div className={styles.error}>{error}</div>}
+
+        {loading ? (
+          <div className={styles.grid} aria-label="İşletmeler yükleniyor">
+            {[0, 1, 2, 3, 4, 5].map((item) => (
+              <div key={item} className={styles.skeleton}>
+                <span />
+                <div>
+                  <i />
+                  <i />
+                  <i />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filteredTenants.length === 0 ? (
           <div className={styles.empty}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-4-4M8 11h6" />
+            </svg>
             <h3>İşletme bulunamadı</h3>
-            <p>Filtreleri değiştirerek tekrar deneyin.</p>
+            <p>Filtreleri değiştirerek tekrar deneyebilirsin.</p>
+            <button
+              type="button"
+              onClick={() => {
+                setSearch('');
+                setCityFilter('');
+                setCategoryFilter('');
+              }}
+            >
+              Filtreleri temizle
+            </button>
           </div>
         ) : (
-          filtered.map(tenant => (
-            <Link
-              key={tenant.id}
-              href={`/${tenant.slug}`}
-              className={styles.card}
-            >
-              <div className={styles.cardHeader}>
-                <h3 className={styles.cardName}>{tenant.name}</h3>
-                {tenant.category && (
-                  <span className={styles.categoryBadge}>
-                    {CATEGORY_LABELS[tenant.category] || tenant.category}
-                  </span>
-                )}
-              </div>
-
-              {tenant.description && (
-                <p className={styles.cardDescription}>{tenant.description}</p>
-              )}
-
-              <div className={styles.cardMeta}>
-                {tenant.city && (
-                  <span className={styles.metaItem}>📍 {tenant.city}</span>
-                )}
-                {tenant.phone && (
-                  <span className={styles.metaItem}>📞 {tenant.phone}</span>
-                )}
-                {tenant.address && (
-                  <span className={styles.metaItem}>🏠 {tenant.address}</span>
-                )}
-              </div>
-            </Link>
-          ))
+          <div className={styles.grid}>
+            {filteredTenants.map((tenant) => (
+              <BusinessCard
+                key={tenant.id}
+                tenant={tenant}
+                isFavorite={favoriteIds.has(tenant.id)}
+                onFavorite={(tenantId) => void handleFavorite(tenantId)}
+              />
+            ))}
+          </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }

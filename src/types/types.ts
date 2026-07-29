@@ -23,25 +23,55 @@ export type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled' | 'complet
 // ---------------------------------------------------------------------------
 
 /** profiles — linked 1:1 to auth.users */
-export interface Profile {
+export type Profile = {
   id: string;
   email: string;
   full_name: string | null;
+  phone: string | null;
+  city: string | null;
   role: UserRole;
   created_at: string;
   updated_at: string;
-}
+};
 
 /** tenants — business accounts */
-export interface Tenant {
+export type Tenant = {
   id: string;
   name: string;
   slug: string;
   owner_id: string;
+  city: string | null;
+  address: string | null;
+  phone: string | null;
+  description: string | null;
+  category: BusinessCategory | null;
   settings: TenantSettings;
   created_at: string;
   updated_at: string;
-}
+};
+
+/** Public business category */
+export type BusinessCategory =
+  | 'barber'
+  | 'beauty_salon'
+  | 'clinic'
+  | 'spa'
+  | 'fitness'
+  | 'dental'
+  | 'veterinary'
+  | 'consulting'
+  | 'photography'
+  | 'education'
+  | 'other';
+
+/** Safe public business projection returned by catalog RPCs */
+export type PublicTenant = Pick<
+  Tenant,
+  'id' | 'name' | 'slug' | 'city' | 'address' | 'phone' | 'description' | 'category'
+>;
+
+/** Safe favorite projection returned by get_my_favorites() */
+export type FavoriteTenant = Pick<Tenant, 'id' | 'name' | 'slug' | 'city'>;
 
 /** Typed tenant settings (extensible) */
 export interface TenantSettings {
@@ -54,16 +84,16 @@ export interface TenantSettings {
 }
 
 /** tenant_members — bridge between profiles and tenants */
-export interface TenantMember {
+export type TenantMember = {
   id: string;
   tenant_id: string;
   profile_id: string;
   role: MemberRole;
   created_at: string;
-}
+};
 
 /** services — bookable services offered by a tenant */
-export interface Service {
+export type Service = {
   id: string;
   tenant_id: string;
   name: string;
@@ -72,10 +102,10 @@ export interface Service {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-}
+};
 
 /** staff — service providers within a tenant */
-export interface Staff {
+export type Staff = {
   id: string;
   tenant_id: string;
   profile_id: string;
@@ -83,14 +113,15 @@ export interface Staff {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-}
+};
 
 /** appointments — client bookings */
-export interface Appointment {
+export type Appointment = {
   id: string;
   tenant_id: string;
   service_id: string;
   staff_id: string;
+  client_id: string | null;
   client_name: string;
   client_phone: string | null;
   client_email: string | null;
@@ -100,7 +131,31 @@ export interface Appointment {
   notes: string | null;
   created_at: string;
   updated_at: string;
-}
+};
+
+/** favorites — customer-to-business bookmarks */
+export type Favorite = {
+  id: string;
+  profile_id: string;
+  tenant_id: string;
+  created_at: string;
+};
+
+/** Safe customer appointment projection returned by get_my_appointments() */
+export type CustomerAppointment = {
+  id: string;
+  tenant_id: string;
+  tenant_name: string;
+  tenant_slug: string;
+  service_id: string;
+  service_name: string;
+  staff_id: string;
+  staff_name: string | null;
+  start_time: string;
+  end_time: string;
+  status: AppointmentStatus;
+  notes: string | null;
+};
 
 // ---------------------------------------------------------------------------
 // Insert / Update helper types
@@ -153,6 +208,8 @@ export interface Database {
           id: string;
           email: string;
           full_name?: string | null;
+          phone?: string | null;
+          city?: string | null;
           role?: UserRole;
           created_at?: string;
           updated_at?: string;
@@ -160,6 +217,8 @@ export interface Database {
         Update: {
           email?: string;
           full_name?: string | null;
+          phone?: string | null;
+          city?: string | null;
           role?: UserRole;
           updated_at?: string;
         };
@@ -172,6 +231,11 @@ export interface Database {
           name: string;
           slug: string;
           owner_id: string;
+          city?: string | null;
+          address?: string | null;
+          phone?: string | null;
+          description?: string | null;
+          category?: BusinessCategory;
           settings?: TenantSettings;
           created_at?: string;
           updated_at?: string;
@@ -180,6 +244,11 @@ export interface Database {
           name?: string;
           slug?: string;
           owner_id?: string;
+          city?: string | null;
+          address?: string | null;
+          phone?: string | null;
+          description?: string | null;
+          category?: BusinessCategory;
           settings?: TenantSettings;
           updated_at?: string;
         };
@@ -207,7 +276,22 @@ export interface Database {
           profile_id?: string;
           role?: MemberRole;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "tenant_members_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tenant_members_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       services: {
         Row: Service;
@@ -229,7 +313,15 @@ export interface Database {
           is_active?: boolean;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "services_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       staff: {
         Row: Staff;
@@ -249,7 +341,22 @@ export interface Database {
           is_active?: boolean;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "staff_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "staff_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       appointments: {
         Row: Appointment;
@@ -258,6 +365,7 @@ export interface Database {
           tenant_id: string;
           service_id: string;
           staff_id: string;
+          client_id?: string | null;
           client_name: string;
           client_phone?: string | null;
           client_email?: string | null;
@@ -272,6 +380,7 @@ export interface Database {
           tenant_id?: string;
           service_id?: string;
           staff_id?: string;
+          client_id?: string | null;
           client_name?: string;
           client_phone?: string | null;
           client_email?: string | null;
@@ -281,7 +390,65 @@ export interface Database {
           notes?: string | null;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "appointments_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointments_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "services";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointments_staff_id_fkey";
+            columns: ["staff_id"];
+            isOneToOne: false;
+            referencedRelation: "staff";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointments_client_id_fkey";
+            columns: ["client_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      favorites: {
+        Row: Favorite;
+        Insert: {
+          id?: string;
+          profile_id: string;
+          tenant_id: string;
+          created_at?: string;
+        };
+        Update: {
+          profile_id?: string;
+          tenant_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "favorites_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "favorites_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          }
+        ];
       };
     };
     Functions: {
@@ -301,6 +468,53 @@ export interface Database {
           p_notes?: string;
         };
         Returns: string;
+      };
+      get_public_staff: {
+        Args: {
+          p_tenant_id: string;
+        };
+        Returns: {
+          staff_id: string;
+          bio: string | null;
+          full_name: string | null;
+        }[];
+      };
+      get_public_tenant: {
+        Args: {
+          p_slug: string;
+        };
+        Returns: PublicTenant[];
+      };
+      get_public_tenants: {
+        Args: Record<string, never>;
+        Returns: PublicTenant[];
+      };
+      get_public_services: {
+        Args: {
+          p_tenant_id: string;
+        };
+        Returns: Service[];
+      };
+      get_my_appointments: {
+        Args: Record<string, never>;
+        Returns: CustomerAppointment[];
+      };
+      cancel_my_appointment: {
+        Args: {
+          p_appointment_id: string;
+        };
+        Returns: boolean;
+      };
+      get_my_favorites: {
+        Args: Record<string, never>;
+        Returns: FavoriteTenant[];
+      };
+      set_favorite: {
+        Args: {
+          p_tenant_id: string;
+          p_is_favorite: boolean;
+        };
+        Returns: boolean;
       };
     };
     Views: {

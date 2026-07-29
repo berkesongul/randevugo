@@ -1,0 +1,280 @@
+.header {
+  position: sticky;
+  z-index: 100;
+  top: 0;
+  border-bottom: 1px solid rgba(18, 49, 58, 0.08);
+  background: rgba(234, 242, 244, 0.86);
+  box-shadow: 0 8px 28px rgba(18, 49, 58, 0.045);
+  backdrop-filter: blur(18px);
+}
+
+.inner {
+  width: min(var(--page-max), calc(100% - (var(--page-gutter) * 2)));
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 2rem;
+  margin: 0 auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand img {
+  width: 168px;
+  height: auto;
+}
+
+.desktopNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.desktopNav a {
+  position: relative;
+  padding: 0.62rem 0.8rem;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-size: 0.89rem;
+  font-weight: 620;
+  transition: color 150ms ease, background 150ms ease;
+}
+
+.desktopNav a:hover,
+.desktopNav .activeLink {
+  color: var(--accent-primary);
+  background: rgba(0, 181, 236, 0.09);
+}
+
+.actions,
+.guestActions,
+.accountButton {
+  display: flex;
+  align-items: center;
+}
+
+.guestActions {
+  gap: 0.45rem;
+}
+
+.loginLink,
+.signupLink {
+  padding: 0.62rem 0.9rem;
+  border-radius: 11px;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.loginLink {
+  color: var(--text-primary);
+}
+
+.loginLink:hover {
+  color: var(--accent-primary);
+  background: rgba(0, 181, 236, 0.08);
+}
+
+.signupLink {
+  color: #fff;
+  background: var(--accent-primary);
+  box-shadow: 0 8px 18px rgba(0, 140, 183, 0.2);
+}
+
+.signupLink:hover {
+  color: #fff;
+  background: var(--accent-secondary);
+  transform: translateY(-1px);
+}
+
+.account {
+  position: relative;
+}
+
+.accountButton {
+  gap: 0.5rem;
+  padding: 0.35rem 0.45rem 0.35rem 0.35rem;
+  border: 1px solid rgba(18, 49, 58, 0.1);
+  border-radius: 999px;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+}
+
+.accountButton:hover {
+  border-color: rgba(0, 181, 236, 0.32);
+  background: #fff;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary-hover), var(--accent-secondary));
+  font-size: 0.84rem;
+  font-weight: 760;
+}
+
+.accountName {
+  max-width: 125px;
+  overflow: hidden;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountButton svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.accountMenu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 230px;
+  overflow: hidden;
+  border: 1px solid rgba(18, 49, 58, 0.1);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 18px 50px rgba(18, 49, 58, 0.14);
+}
+
+.accountHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(18, 49, 58, 0.08);
+  background: var(--brand-50);
+}
+
+.accountHeader strong {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.accountHeader span {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+}
+
+.accountMenu a,
+.accountMenu button {
+  width: 100%;
+  display: block;
+  padding: 0.78rem 1rem;
+  border: 0;
+  color: var(--text-secondary);
+  background: transparent;
+  font: inherit;
+  font-size: 0.84rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accountMenu a:hover,
+.accountMenu button:hover {
+  color: var(--accent-primary);
+  background: var(--brand-50);
+}
+
+.accountMenu button {
+  border-top: 1px solid rgba(18, 49, 58, 0.08);
+  color: #b74444;
+}
+
+.menuButton {
+  width: 42px;
+  height: 42px;
+  display: none;
+  place-items: center;
+  gap: 4px;
+  margin-left: 0.35rem;
+  border: 1px solid rgba(18, 49, 58, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
+.menuButton span {
+  width: 18px;
+  height: 2px;
+  display: block;
+  border-radius: 999px;
+  background: var(--brand-900);
+}
+
+.mobileNav {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .inner {
+    min-height: 68px;
+  }
+
+  .desktopNav,
+  .guestActions {
+    display: none;
+  }
+
+  .menuButton {
+    display: grid;
+  }
+
+  .mobileNav {
+    width: min(100% - (var(--page-gutter) * 2), var(--page-max));
+    display: grid;
+    gap: 0.2rem;
+    margin: 0 auto;
+    padding: 0 0 1rem;
+  }
+
+  .mobileNav a {
+    padding: 0.72rem 0.8rem;
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 650;
+  }
+
+  .mobileNav a:hover {
+    color: var(--accent-primary);
+    background: var(--brand-50);
+  }
+}
+
+@media (max-width: 520px) {
+  .inner {
+    width: min(100% - 1rem, var(--page-max));
+    gap: 0.6rem;
+  }
+
+  .brand img {
+    width: 132px;
+  }
+
+  .accountName {
+    display: none;
+  }
+
+  .accountButton {
+    padding-right: 0.35rem;
+  }
+}

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTenant } from '@/hooks/useTenant';
 import { createClient } from '@/lib/supabase/client';
 import styles from './settings.module.css';
+import type { BusinessCategory } from '@/types/types';
 
 const CATEGORY_OPTIONS = [
   { value: 'barber', label: 'Berber' },
@@ -26,7 +27,7 @@ export default function SettingsPage() {
   // Form state
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
-  const [category, setCategory] = useState('other');
+  const [category, setCategory] = useState<BusinessCategory>('other');
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState('');
   const [description, setDescription] = useState('');
@@ -37,21 +38,24 @@ export default function SettingsPage() {
 
   // Load initial data
   useEffect(() => {
-    if (tenant) {
+    if (!tenant) return;
+
+    const timer = window.setTimeout(() => {
       setName(tenant.name || '');
       setSlug(tenant.slug || '');
-      setCategory((tenant as any).category || 'other');
-      setCity((tenant as any).city || '');
-      setPhone((tenant as any).phone || '');
-      setDescription((tenant as any).description || '');
+      setCategory(tenant.category || 'other');
+      setCity(tenant.city || '');
+      setPhone(tenant.phone || '');
+      setDescription(tenant.description || '');
       
       if (tenant.settings && typeof tenant.settings === 'object') {
-        const settings = tenant.settings as any;
-        if (settings.timezone) {
-          setTimezone(settings.timezone);
+        if (typeof tenant.settings.timezone === 'string') {
+          setTimezone(tenant.settings.timezone);
         }
       }
-    }
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, [tenant]);
 
   const handleSave = async (e: React.FormEvent) => {
@@ -153,7 +157,7 @@ export default function SettingsPage() {
             <select
               id="category"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => setCategory(e.target.value as BusinessCategory)}
             >
               {CATEGORY_OPTIONS.map(opt => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>

@@ -1,30 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  /* Premium Light Theme — Emerald accent */
-  --bg-deep: #f8faf9;
-  --bg-default: #f0f4f2;
+  /* Premium Light Theme - Randevigo blue palette */
+  --bg-deep: #eaf2f4;
+  --bg-default: #e3eff3;
   --bg-surface: rgba(255, 255, 255, 0.85);
-  --bg-surface-hover: rgba(240, 245, 242, 0.9);
+  --bg-surface-hover: rgba(234, 242, 244, 0.92);
   --bg-overlay: rgba(0, 0, 0, 0.4);
   --bg-input: rgba(0, 0, 0, 0.03);
   --bg-input-focus: rgba(0, 0, 0, 0.05);
   
   /* Text */
-  --text-primary: #1a2e22;
-  --text-secondary: #5a6e62;
-  --text-muted: #8a9a90;
+  --text-primary: #12313a;
+  --text-secondary: #49646d;
+  --text-muted: #7c929a;
   
   /* Vibrant Accents */
-  --accent-glow: rgba(16, 185, 129, 0.25);
-  --accent-primary: #059669;
-  --accent-primary-hover: #10b981;
+  --accent-glow: rgba(0, 181, 236, 0.24);
+  --accent-primary: #008cb7;
+  --accent-primary-hover: #00b5ec;
   
-  --accent-secondary: #0284c7;
+  --accent-secondary: #039898;
   
   /* Borders & Dividers */
   --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-glow: rgba(16, 185, 129, 0.4);
+  --border-glow: rgba(0, 181, 236, 0.36);
   
   /* Utilities */
   --shadow-glass: 0 4px 24px rgba(0, 0, 0, 0.06);
@@ -32,6 +32,20 @@
   --radius-lg: 16px;
   --radius-md: 12px;
   --radius-sm: 8px;
+
+  /* Shared product system */
+  --page-max: 1180px;
+  --page-gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --brand-50: #eaf2f4;
+  --brand-100: #abcee5;
+  --brand-300: #00b5ec;
+  --brand-500: #008cb7;
+  --brand-600: #039898;
+  --brand-900: #12313a;
+  --surface-raised: #ffffff;
+  --shadow-sm: 0 8px 24px rgba(18, 49, 58, 0.07);
+  --shadow-md: 0 18px 50px rgba(18, 49, 58, 0.11);
+  --radius-xl: 24px;
 }
 
 html {
@@ -53,9 +67,9 @@ body {
   background-color: var(--bg-deep);
   /* Desktop gradient — hafif ve optimize */
   background-image: 
-    radial-gradient(ellipse at 10% 40%, rgba(16, 185, 129, 0.08), transparent 50%),
-    radial-gradient(ellipse at 90% 20%, rgba(14, 165, 233, 0.06), transparent 50%),
-    radial-gradient(ellipse at 50% 85%, rgba(16, 185, 129, 0.05), transparent 50%);
+    radial-gradient(ellipse at 10% 40%, rgba(0, 181, 236, 0.1), transparent 50%),
+    radial-gradient(ellipse at 90% 20%, rgba(3, 152, 152, 0.08), transparent 50%),
+    radial-gradient(ellipse at 50% 85%, rgba(171, 206, 229, 0.22), transparent 50%);
   background-attachment: fixed;
   font-family: var(--font-inter), sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -90,7 +104,23 @@ input, button, select, textarea {
   font-family: inherit;
 }
 
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid rgba(0, 181, 236, 0.34);
+  outline-offset: 3px;
+}
+
 ::selection {
   background: var(--accent-primary);
   color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

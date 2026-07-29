@@ -1,18 +1,27 @@
 'use client';
 
-// =============================================================================
-// Profile Pages Common Layout
-// =============================================================================
-
-import { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import PublicHeader from '@/components/PublicHeader/PublicHeader';
 import { createClient } from '@/lib/supabase/client';
 import styles from './profile.module.css';
 
+interface ProfileUser {
+  id: string;
+  email: string;
+  fullName: string;
+}
+
+const PROFILE_LINKS = [
+  { href: '/customer', icon: 'G', label: 'Genel bakış', detail: 'Müşteri paneli' },
+  { href: '/profile/edit', icon: 'P', label: 'Profil bilgilerim', detail: 'Kişisel bilgilerin' },
+  { href: '/profile/appointments', icon: 'R', label: 'Randevularım', detail: 'Geçmiş ve aktif' },
+  { href: '/profile/settings', icon: 'A', label: 'Hesap ayarları', detail: 'Şifre ve güvenlik' },
+];
+
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<ProfileUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
@@ -20,14 +29,15 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     async function checkAuth() {
-      const { data: { user: authUser } } = await supabase.auth.getUser();
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
 
       if (!authUser) {
-        router.push('/login?redirect=' + encodeURIComponent(pathname));
+        router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
         return;
       }
 
-      // Fetch user profile
       const { data: profile } = await supabase
         .from('profiles')
         .select('*')
@@ -41,96 +51,71 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
       });
       setLoading(false);
     }
-    checkAuth();
-  }, [supabase, router, pathname]);
 
-  async function handleLogout() {
-    await supabase.auth.signOut();
-    router.push('/');
-    router.refresh();
-  }
+    void checkAuth();
+  }, [pathname, router, supabase]);
 
   if (loading) {
     return (
-      <div className={styles.container}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-          <p style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Yükleniyor...</p>
-        </div>
-      </div>
+      <main className={styles.loadingPage}>
+        <span className={styles.loadingMark} aria-hidden="true" />
+        <p>Hesap bilgilerin yükleniyor...</p>
+      </main>
     );
   }
 
   return (
     <div className={styles.container}>
-      {/* Navbar */}
-      <nav className={styles.navbar}>
-        <div className={styles.navInner}>
-          <Link href="/">
-            <Image
-              src="/images/randevigo-logo.png"
-              alt="Randevigo"
-              width={130}
-              height={45}
-              style={{ objectFit: 'contain', cursor: 'pointer' }}
-              priority
-            />
-          </Link>
-          <button 
-            onClick={handleLogout} 
-            style={{
-              background: 'transparent',
-              border: '1px solid #fee2e2',
-              color: '#dc2626',
-              padding: '0.5rem 1rem',
-              borderRadius: 'var(--radius-sm)',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#fef2f2'; }}
-            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
-          >
-            Çıkış Yap
-          </button>
-        </div>
-      </nav>
+      <PublicHeader />
 
-      {/* Main Grid */}
-      <div className={styles.layoutGrid}>
-        {/* Sidebar */}
-        <aside className={styles.sidebar}>
-          <div className={styles.userMetaSummary}>
-            <div className={styles.metaAvatar}>{user?.fullName?.[0]?.toUpperCase()}</div>
-            <div style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{user?.fullName}</div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{user?.email}</div>
+      <div className={styles.accountShell}>
+        <header className={styles.accountHero}>
+          <div>
+            <span>Hesap merkezi</span>
+            <h1>Kişisel alanın</h1>
+            <p>Profil bilgilerini, randevularını ve hesap güvenliğini buradan yönet.</p>
           </div>
-          
-          <div className={styles.sidebarTitle}>Menü</div>
-          
-          <Link 
-            href="/profile/edit" 
-            className={`${styles.sidebarLink} ${pathname === '/profile/edit' ? styles.sidebarLinkActive : ''}`}
-          >
-            👤 Profilimi Düzenle
+          <Link href="/explore">
+            Yeni randevu al <span aria-hidden="true">→</span>
           </Link>
-          <Link 
-            href="/profile/appointments" 
-            className={`${styles.sidebarLink} ${pathname === '/profile/appointments' ? styles.sidebarLinkActive : ''}`}
-          >
-            📅 Bilgilerim & Randevularım
-          </Link>
-          <Link 
-            href="/profile/settings" 
-            className={`${styles.sidebarLink} ${pathname === '/profile/settings' ? styles.sidebarLinkActive : ''}`}
-          >
-            ⚙️ Ayarlar
-          </Link>
-        </aside>
+        </header>
 
-        {/* Panel Content */}
-        <main className={styles.mainPanel}>
-          {children}
-        </main>
+        <div className={styles.layoutGrid}>
+          <aside className={styles.sidebar}>
+            <div className={styles.userMetaSummary}>
+              <div className={styles.metaAvatar}>
+                {user?.fullName?.[0]?.toLocaleUpperCase('tr-TR') || 'K'}
+              </div>
+              <div>
+                <strong>{user?.fullName}</strong>
+                <small>{user?.email}</small>
+              </div>
+            </div>
+
+            <nav className={styles.sidebarNav} aria-label="Hesap menüsü">
+              {PROFILE_LINKS.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`${styles.sidebarLink} ${isActive ? styles.sidebarLinkActive : ''}`}
+                  >
+                    <span className={styles.navIcon} aria-hidden="true">{item.icon}</span>
+                    <span>
+                      <strong>{item.label}</strong>
+                      <small>{item.detail}</small>
+                    </span>
+                    <span className={styles.navArrow} aria-hidden="true">›</span>
+                  </Link>
+                );
+              })}
+            </nav>
+          </aside>
+
+          <main className={styles.mainPanel}>{children}</main>
+        </div>
       </div>
     </div>
   );

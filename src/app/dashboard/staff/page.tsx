@@ -1,15 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useStaff, type StaffWithProfile } from '@/hooks/useStaff';
-import type { StaffUpdate } from '@/types/types';
+import { useState } from 'react';
+import {
+  useStaff,
+  type PotentialStaff,
+  type StaffWithProfile,
+} from '@/hooks/useStaff';
 import styles from './staff.module.css';
 
 export default function StaffPage() {
   const { staffList, isLoading, error, addStaff, updateStaff, deleteStaff, getPotentialStaff } = useStaff();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingStaff, setEditingStaff] = useState<StaffWithProfile | null>(null);
-  const [potentialStaffList, setPotentialStaffList] = useState<any[]>([]);
+  const [potentialStaffList, setPotentialStaffList] = useState<PotentialStaff[]>([]);
   
   // Form state
   const [profileId, setProfileId] = useState('');
@@ -233,4 +236,3 @@ export default function StaffPage() {
     </div>
   );
 }
-

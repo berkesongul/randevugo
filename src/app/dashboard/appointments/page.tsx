@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAppointments, type AppointmentWithDetails } from '@/hooks/useAppointments';
+import { useAppointments } from '@/hooks/useAppointments';
 import { useServices } from '@/hooks/useServices';
 import { useStaff } from '@/hooks/useStaff';
 import type { AppointmentStatus } from '@/types/types';
@@ -115,15 +115,6 @@ export default function AppointmentsPage() {
       case 'completed': return styles.statusCompleted;
       case 'cancelled': return styles.statusCancelled;
       default: return styles.statusPending;
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'confirmed': return 'Onaylandı';
-      case 'completed': return 'Tamamlandı';
-      case 'cancelled': return 'İptal';
-      default: return 'Bekliyor';
     }
   };
 
@@ -341,4 +332,3 @@ export default function AppointmentsPage() {
     </div>
   );
 }
-

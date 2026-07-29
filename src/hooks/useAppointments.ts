@@ -40,7 +40,7 @@ export function useAppointments() {
         .order('start_time', { ascending: true });
 
       if (fetchError) throw fetchError;
-      setAppointments((data as any) || []);
+      setAppointments(data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Randevular yüklenirken hata oluştu.');
     } finally {
@@ -49,7 +49,7 @@ export function useAppointments() {
   }, [tenant, supabase]);
 
   useEffect(() => {
-    fetchAppointments();
+    void Promise.resolve().then(fetchAppointments);
   }, [fetchAppointments]);
 
   const addAppointment = async (

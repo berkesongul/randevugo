@@ -36,11 +36,11 @@ export default function Sidebar({ onNavigate }: SidebarProps) {
       <div className={styles.sidebarHeader}>
         <Link href="/" onClick={onNavigate}>
           <Image
-            src="/images/randevigo-logo.png"
+            src="/images/randevigo-logo.svg"
             alt="Randevigo Logo"
             width={160}
-            height={40}
-            style={{ objectFit: 'contain' }}
+            height={87}
+            style={{ objectFit: 'contain', height: 'auto' }}
             priority
           />
         </Link>

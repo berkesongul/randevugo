@@ -1,28 +1,54 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { useTenant } from '@/hooks/useTenant';
+import { useAppointments } from '@/hooks/useAppointments';
+import { useServices } from '@/hooks/useServices';
+import { useStaff } from '@/hooks/useStaff';
 import Link from 'next/link';
 import styles from './dashboard.module.css';
 
+const subscribeToClient = () => () => {};
+
 export default function DashboardPage() {
   const { tenant } = useTenant();
-  const [baseUrl, setBaseUrl] = useState('');
+  const { appointments } = useAppointments();
+  const { services } = useServices();
+  const { staffList } = useStaff();
   const [copied, setCopied] = useState(false);
-  const [currentDate, setCurrentDate] = useState('');
-
-  useEffect(() => {
-    // Get the base URL for the current environment
-    setBaseUrl(window.location.origin);
-    // Format current date
-    const now = new Date();
-    setCurrentDate(now.toLocaleDateString('tr-TR', {
+  const isClient = useSyncExternalStore(
+    subscribeToClient,
+    () => true,
+    () => false
+  );
+  const baseUrl = isClient ? window.location.origin : '';
+  const currentDate = isClient
+    ? new Date().toLocaleDateString('tr-TR', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    }));
-  }, []);
+    })
+    : '';
+
+  const today = new Date();
+  const todayStart = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+  const tomorrowStart = new Date(todayStart);
+  tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
+  const todayAppointmentCount = appointments.filter((appointment) => {
+    const start = new Date(appointment.start_time);
+    return start >= todayStart && start < tomorrowStart;
+  }).length;
+  const activeServiceCount = services.filter((service) => service.is_active).length;
+  const activeStaffCount = staffList.filter((staff) => staff.is_active).length;
+  const pendingAppointmentCount = appointments.filter(
+    (appointment) => appointment.status === 'pending'
+  ).length;
 
   const handleCopyLink = () => {
     if (tenant?.slug) {
@@ -53,28 +79,28 @@ export default function DashboardPage() {
           <div className={styles.statCard}>
             <div className={styles.statIcon}>📅</div>
             <div className={styles.statInfo}>
-              <span className={styles.statValue}>—</span>
+              <span className={styles.statValue}>{todayAppointmentCount}</span>
               <span className={styles.statLabel}>Bugünkü Randevular</span>
             </div>
           </div>
           <div className={styles.statCard}>
             <div className={styles.statIcon}>💇</div>
             <div className={styles.statInfo}>
-              <span className={styles.statValue}>—</span>
+              <span className={styles.statValue}>{activeServiceCount}</span>
               <span className={styles.statLabel}>Aktif Hizmetler</span>
             </div>
           </div>
           <div className={styles.statCard}>
             <div className={styles.statIcon}>👥</div>
             <div className={styles.statInfo}>
-              <span className={styles.statValue}>—</span>
+              <span className={styles.statValue}>{activeStaffCount}</span>
               <span className={styles.statLabel}>Personel Sayısı</span>
             </div>
           </div>
           <div className={styles.statCard}>
             <div className={styles.statIcon}>⏳</div>
             <div className={styles.statInfo}>
-              <span className={styles.statValue}>—</span>
+              <span className={styles.statValue}>{pendingAppointmentCount}</span>
               <span className={styles.statLabel}>Bekleyen Randevular</span>
             </div>
           </div>

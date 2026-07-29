@@ -13,6 +13,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useTenant } from '@/hooks/useTenant';
 import Image from 'next/image';
 import styles from './setup.module.css';
+import type { BusinessCategory } from '@/types/types';
 
 const CATEGORY_OPTIONS = [
   { value: 'barber', label: 'Berber' },
@@ -45,7 +46,7 @@ export default function SetupPage() {
   const [businessName, setBusinessName] = useState('');
   const [slug, setSlug] = useState('');
   const [isManualSlug, setIsManualSlug] = useState(false);
-  const [category, setCategory] = useState('other');
+  const [category, setCategory] = useState<BusinessCategory>('other');
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState('');
   const [description, setDescription] = useState('');
@@ -114,12 +115,12 @@ export default function SetupPage() {
         <div className={styles.header}>
           <div className={styles.icon} style={{ display: 'flex', justifyContent: 'center' }}>
             <Image
-              src="/images/randevigo-logo.png"
+              src="/images/randevigo-logo.svg"
               alt="Randevigo Logo"
               width={220}
-              height={80}
+              height={120}
               priority
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: 'contain', height: 'auto' }}
             />
           </div>
           <h1>İşletmenizi Kurun</h1>
@@ -163,7 +164,7 @@ export default function SetupPage() {
             <select
               id="category"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => setCategory(e.target.value as BusinessCategory)}
               style={{
                 padding: '0.85rem 1rem',
                 borderRadius: 'var(--radius-sm)',
@@ -237,7 +238,7 @@ export default function SetupPage() {
 
         <div className={styles.footer} style={{ marginTop: '2rem' }}>
           <div style={{ opacity: 0.5, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
-             <Image src="/images/randevigo-logo.png" alt="Randevigo Logo" width={80} height={30} style={{ objectFit: 'contain' }} />
+             <Image src="/images/randevigo-logo.svg" alt="Randevigo Logo" width={80} height={44} style={{ objectFit: 'contain', height: 'auto' }} />
              <span style={{ fontSize: '0.85rem' }}>© 2026</span>
           </div>
         </div>
@@ -245,4 +246,3 @@ export default function SetupPage() {
     </main>
   );
 }
-

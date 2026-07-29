@@ -34,7 +34,7 @@
 .addBtn:hover {
   background: #0ea5e9;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 181, 236, 0.3);
 }
 
 .tableContainer {
@@ -126,15 +126,15 @@
 }
 
 .statusConfirmed {
-  background: rgba(14, 165, 233, 0.15);
+  background: rgba(0, 181, 236, 0.15);
   color: #0ea5e9;
-  border: 1px solid rgba(14, 165, 233, 0.3);
+  border: 1px solid rgba(0, 181, 236, 0.3);
 }
 
 .statusCompleted {
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(0, 181, 236, 0.15);
   color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(0, 181, 236, 0.3);
 }
 
 .statusCancelled {
@@ -275,7 +275,7 @@
 .formGroup input:focus {
   outline: none;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+  box-shadow: 0 0 0 2px rgba(0, 181, 236, 0.2);
 }
 
 .formGroup textarea {

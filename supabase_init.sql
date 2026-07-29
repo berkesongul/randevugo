@@ -1,3 +1,7 @@
+-- LEGACY SNAPSHOT: This combined schema is kept for historical reference.
+-- For new environments, apply supabase/migrations/*.sql in numeric order.
+-- Do not use this file as the authoritative schema source.
+
 -- ============================================================================
 -- Migration 00001: Profiles Table
 -- ============================================================================

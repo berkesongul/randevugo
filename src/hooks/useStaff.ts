@@ -1,10 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useTenant } from './useTenant';
-import type { Staff, Profile, StaffInsert, StaffUpdate } from '@/types/types';
+import type {
+  Staff,
+  Profile,
+  StaffInsert,
+  StaffUpdate,
+  TenantMember,
+} from '@/types/types';
 
 // Extended type to include profile data
 export type StaffWithProfile = Staff & { profiles: Pick<Profile, 'full_name' | 'email'> | null };
+export type PotentialStaff = Pick<TenantMember, 'profile_id'> & {
+  profiles: Pick<Profile, 'full_name' | 'email'>;
+};
 
 export function useStaff() {
   const { tenant } = useTenant();
@@ -35,9 +44,7 @@ export function useStaff() {
 
       if (fetchError) throw fetchError;
       
-      // The join returns an array or single object depending on relationship.
-      // Since profile_id is an FK to profiles(id), it should be a single object.
-      setStaffList((data as any) || []);
+      setStaffList(data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch staff');
     } finally {
@@ -46,7 +53,7 @@ export function useStaff() {
   }, [tenant, supabase]);
 
   useEffect(() => {
-    fetchStaff();
+    void Promise.resolve().then(fetchStaff);
   }, [fetchStaff]);
 
   const addStaff = async (staff: Omit<StaffInsert, 'tenant_id'>) => {
@@ -66,7 +73,7 @@ export function useStaff() {
       .single();
 
     if (error) throw error;
-    setStaffList((prev) => [data as any, ...prev]);
+    setStaffList((prev) => [data, ...prev]);
     return data;
   };
 
@@ -82,7 +89,7 @@ export function useStaff() {
       .single();
 
     if (error) throw error;
-    setStaffList((prev) => prev.map((s) => (s.id === id ? (data as any) : s)));
+    setStaffList((prev) => prev.map((s) => (s.id === id ? data : s)));
     return data;
   };
 
@@ -108,7 +115,10 @@ export function useStaff() {
     
     // Filter out those who are already in staffList
     const currentStaffIds = new Set(staffList.map(s => s.profile_id));
-    return (data as any).filter((member: any) => !currentStaffIds.has(member.profile_id));
+    return (data || []).filter(
+      (member): member is PotentialStaff =>
+        Boolean(member.profiles) && !currentStaffIds.has(member.profile_id)
+    );
   };
 
   return {

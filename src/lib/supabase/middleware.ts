@@ -9,6 +9,8 @@
 
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import type { Database } from '@/types/types';
+import { getSafeRedirectPath } from '@/lib/navigation';
 
 /** Routes only accessible to business owners */
 const OWNER_ROUTES = ['/dashboard', '/setup'];
@@ -24,7 +26,7 @@ export async function updateSession(request: NextRequest) {
     request,
   });
 
-  const supabase = createServerClient<any>(
+  const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -131,11 +133,11 @@ export async function updateSession(request: NextRequest) {
 
     // --- Auth routes: redirect logged-in users away ---
     if (isAuthRoute) {
-      const redirectUrl = request.nextUrl.searchParams.get('redirect');
+      const redirectUrl = getSafeRedirectPath(
+        request.nextUrl.searchParams.get('redirect')
+      );
       if (redirectUrl) {
-        const url = request.nextUrl.clone();
-        url.pathname = redirectUrl;
-        url.searchParams.delete('redirect');
+        const url = new URL(redirectUrl, request.url);
         return NextResponse.redirect(url);
       }
 
@@ -167,4 +169,3 @@ export async function updateSession(request: NextRequest) {
 
   return supabaseResponse;
 }
-

@@ -1,8 +1,8 @@
 // scratch/check-tenants.js
 // Supabase'deki tüm tenant (işletme) kayıtlarını kontrol eder ve eksik/hatalı slug veya temel alanları raporlar.
 
-require('dotenv').config();
-const { createClient } = require('@supabase/supabase-js');
+import 'dotenv/config';
+import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

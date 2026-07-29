@@ -1,202 +1,245 @@
-// =============================================================================
-// Landing Page — Public homepage for Randevigo (Moved to /kurumsal)
-// =============================================================================
-
-import Image from 'next/image';
 import Link from 'next/link';
-import styles from '../landing.module.css';
+import PublicHeader from '@/components/PublicHeader/PublicHeader';
+import styles from './kurumsal.module.css';
+
+const FEATURES = [
+  {
+    number: '01',
+    title: 'Tek merkezden yönetim',
+    description: 'Hizmetlerini, personelini ve randevu taleplerini sade bir panelde bir araya getir.',
+  },
+  {
+    number: '02',
+    title: 'Her işletmeye özel sayfa',
+    description: 'Müşterilerin paylaşılabilir işletme sayfandan hizmet ve uygun zaman seçebilsin.',
+  },
+  {
+    number: '03',
+    title: 'Daha düzenli bir takvim',
+    description: 'Randevu durumlarını takip et, günlük planını daha görünür ve yönetilebilir kıl.',
+  },
+  {
+    number: '04',
+    title: 'Müşteri deneyimi',
+    description: 'Keşiften randevu talebine kadar hızlı ve mobil uyumlu bir deneyim sun.',
+  },
+];
 
 export default function KurumsalPage() {
   return (
-    <main className={styles.container}>
-      {/* Animated background */}
-      <div className={styles.bgWrapper}>
-        <div className={`${styles.blob} ${styles.blob1}`} />
-        <div className={`${styles.blob} ${styles.blob2}`} />
-        <div className={`${styles.blob} ${styles.blob3}`} />
-      </div>
+    <div className={styles.page}>
+      <PublicHeader />
 
-      {/* Navbar */}
-      <nav className={styles.navbar}>
-        <div className={styles.navInner}>
-          <Image
-            src="/images/randevigo-logo.png"
-            alt="Randevigo"
-            width={140}
-            height={50}
-            style={{ objectFit: 'contain' }}
-            priority
-          />
-          <div className={styles.navLinks}>
-            <Link href="/login" className={styles.navLink}>Giriş Yap</Link>
+      <main>
+        <section className={styles.hero}>
+          <div className={styles.heroCopy}>
+            <span className={styles.eyebrow}>İşletmeler için Randevigo</span>
+            <h1>
+              Randevu trafiğini azalt, <em>işine daha çok odaklan.</em>
+            </h1>
+            <p>
+              Randevigo; hizmet veren işletmelerin takvimini, ekibini ve müşteri taleplerini
+              tek bir akışta yönetmesine yardımcı olur.
+            </p>
+            <div className={styles.heroActions}>
+              <Link href="/signup?role=owner" className={styles.primaryAction}>
+                İşletmeni ücretsiz ekle <span aria-hidden="true">→</span>
+              </Link>
+              <Link href="/fiyatlandirma" className={styles.secondaryAction}>
+                Planları incele
+              </Link>
+            </div>
+            <div className={styles.heroTrust}>
+              <span><b>✓</b> Hızlı kurulum</span>
+              <span><b>✓</b> Mobil uyumlu</span>
+              <span><b>✓</b> Ortak veri altyapısı</span>
+            </div>
           </div>
-        </div>
-      </nav>
 
-      {/* Hero */}
-      <section className={styles.hero}>
-        <h1 className={styles.heroTitle}>
-          Randevularınızı <span className={styles.highlight}>Kolayca</span> Yönetin
-        </h1>
-        <p className={styles.heroSubtitle}>
-          İşletmeniz için online randevu sistemi kurun veya müşteri olarak 
-          en yakın işletmelerden hızlıca randevu alın.
-        </p>
-        <div className={styles.heroCtas}>
-          <Link href="/signup" className={styles.ctaPrimary}>
-            Hemen Başla
+          <div className={styles.productVisual} aria-label="Randevigo işletme paneli ön izlemesi">
+            <div className={styles.visualTop}>
+              <div>
+                <span className={styles.visualDot} />
+                <strong>Bugünün akışı</strong>
+              </div>
+              <span>Canlı panel</span>
+            </div>
+            <div className={styles.visualStats}>
+              <article>
+                <span>Bugün</span>
+                <strong>8</strong>
+                <small>randevu</small>
+              </article>
+              <article>
+                <span>Bekleyen</span>
+                <strong>3</strong>
+                <small>talep</small>
+              </article>
+              <article>
+                <span>Doluluk</span>
+                <strong>%74</strong>
+                <small>bu hafta</small>
+              </article>
+            </div>
+            <div className={styles.schedule}>
+              <div className={styles.timeColumn}>
+                <span>09:00</span>
+                <span>10:30</span>
+                <span>12:00</span>
+                <span>13:30</span>
+              </div>
+              <div className={styles.scheduleRows}>
+                <div className={styles.scheduleItem}>
+                  <span className={styles.avatar}>AY</span>
+                  <div><strong>Saç kesimi</strong><small>Ayşe Y. · 41 dk.</small></div>
+                  <b>Onaylı</b>
+                </div>
+                <div className={styles.scheduleItem}>
+                  <span className={styles.avatar}>MK</span>
+                  <div><strong>Bakım paketi</strong><small>Mehmet K. · 60 dk.</small></div>
+                  <b>Bekliyor</b>
+                </div>
+                <div className={styles.openSlot}>+ Uygun zaman aralığı</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.valueStrip} aria-label="Ürün avantajları">
+          <div>
+            <strong>Web</strong>
+            <span>Müşterilerin seni kolayca bulsun</span>
+          </div>
+          <div>
+            <strong>Panel</strong>
+            <span>Ekibini ve takvimini yönet</span>
+          </div>
+          <div>
+            <strong>Mobil</strong>
+            <span>Her yerden hızlıca eriş</span>
+          </div>
+          <div>
+            <strong>Tek veri</strong>
+            <span>Tüm kanallarda aynı bilgiler</span>
+          </div>
+        </section>
+
+        <section className={styles.features} aria-labelledby="features-title">
+          <div className={styles.sectionHeading}>
+            <span>İşini kolaylaştıran yapı</span>
+            <h2 id="features-title">Günlük operasyonun için gereken temel parçalar.</h2>
+            <p>Dağınık mesajları ve notları, takip edilebilir bir randevu akışına dönüştür.</p>
+          </div>
+          <div className={styles.featureGrid}>
+            {FEATURES.map((feature) => (
+              <article key={feature.number}>
+                <span>{feature.number}</span>
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.audience}>
+          <div className={styles.audienceCopy}>
+            <span className={styles.eyebrow}>Farklı işlere, ortak çözüm</span>
+            <h2>Randevuyla çalışan her işletmeye uyum sağlar.</h2>
+            <p>
+              Hizmet süreni, ekibini ve çalışma düzenini sen belirlersin. Randevigo müşteriye
+              doğru seçenekleri gösterir, sana yönetilebilir bir talep akışı sunar.
+            </p>
+            <Link href="/explore">İşletme sayfalarını keşfet <span aria-hidden="true">→</span></Link>
+          </div>
+          <div className={styles.audienceList}>
+            {['Berber ve kuaförler', 'Güzellik merkezleri', 'Klinikler', 'Spa ve bakım', 'Fitness stüdyoları', 'Danışmanlık hizmetleri'].map(
+              (item, index) => (
+                <div key={item}>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <strong>{item}</strong>
+                </div>
+              )
+            )}
+          </div>
+        </section>
+
+        <section className={styles.process} aria-labelledby="process-title">
+          <div className={styles.sectionHeading}>
+            <span>Kurulum süreci</span>
+            <h2 id="process-title">Üç adımda randevu almaya başla.</h2>
+          </div>
+          <div className={styles.processGrid}>
+            <article>
+              <span>1</span>
+              <h3>İşletmeni oluştur</h3>
+              <p>Temel işletme ve iletişim bilgilerini gir.</p>
+            </article>
+            <article>
+              <span>2</span>
+              <h3>Hizmetlerini ekle</h3>
+              <p>Süre, fiyat ve hizmet detaylarını belirle.</p>
+            </article>
+            <article>
+              <span>3</span>
+              <h3>Sayfanı paylaş</h3>
+              <p>Müşterilerin randevu talebi göndermeye başlasın.</p>
+            </article>
+          </div>
+        </section>
+
+        <section className={styles.security}>
+          <div className={styles.securityMark} aria-hidden="true">✓</div>
+          <div>
+            <span>Güvenli ve kontrollü</span>
+            <h2>Veri erişimi rol ve işletme sınırlarıyla yönetilir.</h2>
+          </div>
+          <p>
+            Müşteri, işletme ve personel verileri aynı altyapıda tutulurken her kullanıcı
+            yalnızca yetkili olduğu kayıtlara erişir.
+          </p>
+        </section>
+
+        <section className={styles.faq} aria-labelledby="corporate-faq">
+          <div className={styles.sectionHeading}>
+            <span>Sık sorulanlar</span>
+            <h2 id="corporate-faq">Başlamadan önce</h2>
+          </div>
+          <div>
+            <details>
+              <summary>Teknik bilgiye ihtiyacım var mı?</summary>
+              <p>Hayır. İşletme bilgilerini ve hizmetlerini paneldeki adımları izleyerek ekleyebilirsin.</p>
+            </details>
+            <details>
+              <summary>Müşteriler uygulama indirmek zorunda mı?</summary>
+              <p>Hayır. İşletme sayfan web tarayıcısından da kullanılabilir.</p>
+            </details>
+            <details>
+              <summary>Personel ve hizmetleri ayrı yönetebilir miyim?</summary>
+              <p>Evet. Hizmetleri, süreleri ve personel ilişkilerini işletme panelinden düzenleyebilirsin.</p>
+            </details>
+          </div>
+        </section>
+
+        <section className={styles.bottomCta}>
+          <div>
+            <span>Takvimini sadeleştirmeye hazır mısın?</span>
+            <h2>İşletme sayfanı bugün oluştur.</h2>
+          </div>
+          <Link href="/signup?role=owner">
+            Ücretsiz başla <span aria-hidden="true">→</span>
           </Link>
-          <Link href="/explore" className={styles.ctaSecondary}>
-            İşletmeleri Keşfet
-          </Link>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Stats */}
-      <section className={styles.stats}>
-        <h2>Bize Güvenen İşletmeler</h2>
-        <div className={styles.statsGrid}>
-          <div className={styles.stat}>
-            <div className={styles.statNumber}>500+</div>
-            <div className={styles.statLabel}>Aktif İşletme</div>
-          </div>
-          <div className={styles.stat}>
-            <div className={styles.statNumber}>50K+</div>
-            <div className={styles.statLabel}>Başarılı Randevu</div>
-          </div>
-          <div className={styles.stat}>
-            <div className={styles.statNumber}>10K+</div>
-            <div className={styles.statLabel}>Mutlu Müşteri</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className={styles.features}>
-        <h2 style={{ textAlign: 'center', marginBottom: '3rem' }}>Neden Randevigo?</h2>
-        <div className={styles.feature}>
-          <div className={styles.featureIcon}>🏪</div>
-          <h3>İşletmeler İçin</h3>
-          <p>Hizmetlerinizi tanımlayın, personelinizi yönetin ve randevularınızı tek panelden takip edin.</p>
-        </div>
-        <div className={styles.feature}>
-          <div className={styles.featureIcon}>📱</div>
-          <h3>Müşteriler İçin</h3>
-          <p>Bulunduğunuz şehirdeki işletmeleri keşfedin ve birkaç tıkla randevu alın.</p>
-        </div>
-        <div className={styles.feature}>
-          <div className={styles.featureIcon}>🔒</div>
-          <h3>Güvenli & Hızlı</h3>
-          <p>Çift randevu koruması ile çakışma olmaz. Verileriniz güvende.</p>
-        </div>
-        <div className={styles.feature}>
-          <div className={styles.featureIcon}>⚡</div>
-          <h3>Hızlı Kurulum</h3>
-          <p>5 dakika içinde başlayın. Özel teknik bilgisine ihtiyaç yoktur.</p>
-        </div>
-        <div className={styles.feature}>
-          <div className={styles.featureIcon}>📊</div>
-          <h3>Analitikler</h3>
-          <p>Randevularınızı takip edin, raporlar alın ve işletmenizi büyütün.</p>
-        </div>
-        <div className={styles.feature}>
-          <div className={styles.featureIcon}>🤝</div>
-          <h3>7/24 Destek</h3>
-          <p>Sorularınız mı var? Ekibimiz her zaman yardımcı olmaya hazır.</p>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className={styles.howItWorks}>
-        <h2>Nasıl Çalışır?</h2>
-        <div className={styles.stepsContainer}>
-          <div className={styles.step}>
-            <div className={styles.stepNumber}>1</div>
-            <h3>Hesap Oluştur</h3>
-            <p>E-posta adresiniz ile hızlıca kayıt olun.</p>
-          </div>
-          <div className={styles.stepArrow}>→</div>
-          <div className={styles.step}>
-            <div className={styles.stepNumber}>2</div>
-            <h3>Profilini Ayarla</h3>
-            <p>İşletme bilgilerini ve hizmetlerinizi ekleyin.</p>
-          </div>
-          <div className={styles.stepArrow}>→</div>
-          <div className={styles.step}>
-            <div className={styles.stepNumber}>3</div>
-            <h3>Randevu Al</h3>
-            <p>Müşteriler sizi bulup randevu almaya başlasın.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className={styles.testimonials}>
-        <h2>Müşterilerimiz Diyor Ki</h2>
-        <div className={styles.testimonialsGrid}>
-          <div className={styles.testimonial}>
-            <div className={styles.stars}>⭐⭐⭐⭐⭐</div>
-            <p>"Randevigo sayesinde müşteri yönetimi çok daha kolaylaştı. Çakışmaları tamamen ortadan kaldırdık."</p>
-            <div className={styles.author}>- Ayşe Yıldız, Kuaför</div>
-          </div>
-          <div className={styles.testimonial}>
-            <div className={styles.stars}>⭐⭐⭐⭐⭐</div>
-            <p>"Arayüzü çok basit buldum. Teknoloji bilgisi olmasa da rahat kullanabiliyor."</p>
-            <div className={styles.author}>- Mehmet Karagöz, Berber</div>
-          </div>
-          <div className={styles.testimonial}>
-            <div className={styles.stars}>⭐⭐⭐⭐⭐</div>
-            <p>"Müşteri memnuniyeti arttı, randevu saatlerinde boşluk kalmadı. Harika bir sistem!"</p>
-            <div className={styles.author}>- Fatma Demir, Estetisyen</div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className={styles.ctaSection}>
-        <h2>Hadi Başlayalım!</h2>
-        <p>İşletmenizi dijitalleştirin, müşteri deneyimini iyileştirin.</p>
-        <div className={styles.ctaButtons}>
-          <Link href="/login" className={styles.ctaSecondary}>
-            Giriş Yap
-          </Link>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className={styles.faq}>
-        <h2>Sıkça Sorulan Sorular</h2>
-        <div className={styles.faqContainer}>
-          <details className={styles.faqItem}>
-            <summary>Randevigo tamamen ücretsiz mi?</summary>
-            <p>Evet, temel özellikleri tamamen ücretsiz olarak kullanabilirsiniz. Premium özellikleri ise çok uygun fiyatlarla sunuyoruz.</p>
-          </details>
-          <details className={styles.faqItem}>
-            <summary>Verilerim güvende mi?</summary>
-            <p>Evet, verileriniz 256-bit şifreleme ile korunmaktadır ve GDPR uyumludur.</p>
-          </details>
-          <details className={styles.faqItem}>
-            <summary>Müşteri destek var mı?</summary>
-            <p>Elbette! E-posta, chat ve telefon aracılığıyla 7/24 destek sağlıyoruz.</p>
-          </details>
-          <details className={styles.faqItem}>
-            <summary>Başka sistemlerden veri aktarabilir miyim?</summary>
-            <p>Evet, eski sisteminizden verilerinizi biz aktarabiliriz. Destek ekibimize yazın.</p>
-          </details>
-        </div>
-      </section>
-
-      {/* Footer */}
       <footer className={styles.footer}>
-        <div style={{ opacity: 0.5, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ display: 'inline-flex', cursor: 'pointer' }}>
-              <Image src="/images/randevigo-logo.png" alt="Randevigo" width={80} height={30} style={{ objectFit: 'contain' }} loading="eager" />
-            </span>
-          </Link>
-          <span>© 2026</span>
-        </div>
+        <strong>Randevigo</strong>
+        <nav aria-label="Alt navigasyon">
+          <Link href="/explore">İşletmeler</Link>
+          <Link href="/fiyatlandirma">Fiyatlandırma</Link>
+          <Link href="/login">Giriş yap</Link>
+        </nav>
+        <span>© 2026 Randevigo</span>
       </footer>
-    </main>
+    </div>
   );
 }

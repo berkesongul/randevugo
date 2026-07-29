@@ -1,24 +1,25 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import styles from './IntroScreen.module.css';
 
+const subscribeToClient = () => () => {};
+
 export default function IntroScreen() {
   const [isVisible, setIsVisible] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useSyncExternalStore(
+    subscribeToClient,
+    () => true,
+    () => false
+  );
+  const hasSeenIntro =
+    isMounted && sessionStorage.getItem('randevigo_intro_seen') === 'true';
 
   useEffect(() => {
-    // Check if the user has already seen the intro this session
-    const hasSeenIntro = sessionStorage.getItem('randevigo_intro_seen');
-
-    if (hasSeenIntro) {
-      setIsVisible(false);
-      setIsMounted(true);
+    if (sessionStorage.getItem('randevigo_intro_seen') === 'true') {
       return;
     }
-
-    setIsMounted(true);
 
     // Hide intro after 2.5 seconds
     const timer = setTimeout(() => {
@@ -30,7 +31,7 @@ export default function IntroScreen() {
   }, []);
 
   // Avoid rendering anything on the server until mounted to prevent hydration mismatches
-  if (!isMounted) return null;
+  if (!isMounted || hasSeenIntro) return null;
 
   // Output nothing if not visible (saves DOM nodes) after transition
   // We use CSS for the smooth fade-out, so we wait until it's completely hidden
@@ -41,10 +42,10 @@ export default function IntroScreen() {
       <div className={styles.logoContainer}>
         <div className={styles.glow} />
         <Image
-          src="/images/randevigo-logo.png"
+          src="/images/randevigo-logo.svg"
           alt="Randevigo Logo"
           width={400}
-          height={150}
+          height={219}
           priority
           className={styles.logo}
         />

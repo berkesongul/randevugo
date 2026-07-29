@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Randevigo
 
-## Getting Started
+Randevigo; işletmelerin hizmet, personel ve randevularını yönettiği, müşterilerin
+işletme keşfedip randevu talebi oluşturabildiği çok kiracılı bir randevu
+platformudur.
 
-First, run the development server:
+## Teknoloji
+
+- Next.js 16 App Router ve React 19
+- TypeScript
+- Supabase Auth ve PostgreSQL
+- Supabase Row Level Security (RLS)
+
+Web, gelecekteki Android ve iOS istemcileriyle aynı Supabase projesini ve aynı
+güvenli RPC sözleşmelerini kullanacak şekilde tasarlanmıştır.
+
+## Yerel kurulum
+
+Gereksinimler: güncel Node.js LTS ve bir Supabase projesi.
+
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
+
+Uygulama varsayılan olarak [http://localhost:3000](http://localhost:3000)
+adresinde açılır. Port doluysa Next.js bir sonraki uygun portu kullanır.
+
+`.env.local` içine Supabase Project Settings → API bölümündeki değerleri girin:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
+```
+
+`NEXT_PUBLIC_` değişkenlerine yalnızca public/publishable anahtar yazılmalıdır.
+Secret veya `service_role` anahtarını hiçbir zaman tarayıcı ortamına koymayın.
+
+## Veritabanı
+
+Kaynak şema `supabase/migrations/` klasöründedir. Migration dosyalarını dosya
+numarası sırasıyla Supabase SQL Editor veya Supabase CLI üzerinden uygulayın.
+
+Son migration olan `00009_complete_customer_booking.sql` şunları sağlar:
+
+- müşteri profilindeki telefon/şehir alanları,
+- müşteriye bağlı randevular ve güvenli iptal akışı,
+- favori işletmeler,
+- public katalog için dar kapsamlı RPC’ler,
+- randevu oluşturma doğrulamaları ve eşzamanlı rezervasyon koruması,
+- özel tablo ve fonksiyonlar için sıkı RLS/izin sınırları.
+
+`supabase_init.sql` eski birleşik şema kopyasıdır; yeni kurulumlarda kaynak
+olarak migration klasörünü kullanın.
+
+## Komutlar
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Değişiklik tesliminden önce en az aşağıdaki kontroller çalıştırılmalıdır:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx tsc --noEmit
+npm run lint
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Temel akışlar
 
-## Learn More
+- `/` — public işletme kataloğu
+- `/explore` — filtreleme ve favoriler
+- `/[slug]` — işletmenin public randevu sayfası
+- `/customer` ve `/profile/*` — müşteri hesabı/randevuları
+- `/dashboard/*` — işletme yönetimi
+- `/setup` — yeni işletme kurulumu
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Kimlik doğrulama ve rol yönlendirmeleri Next.js 16 `proxy.ts` üzerinden
+yürütülür. Yetkilendirme yalnızca arayüze bırakılmaz; asıl veri sınırı Supabase
+RLS politikaları ve RPC fonksiyonları tarafından uygulanır.
