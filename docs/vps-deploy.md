@@ -47,6 +47,42 @@ Recommended proxy responsibilities:
 - request size and rate limits
 - forwarding `Host`, `X-Forwarded-For`, and `X-Forwarded-Proto`
 
+## Nginx setup
+
+This repository includes an Nginx template at:
+
+```bash
+deploy/nginx/randevigo.conf
+```
+
+On the VPS, copy it into Nginx sites:
+
+```bash
+sudo cp deploy/nginx/randevigo.conf /etc/nginx/sites-available/randevigo
+sudo nano /etc/nginx/sites-available/randevigo
+```
+
+Check these values:
+
+- `server_name beralli.com.tr www.beralli.com.tr;`
+- `proxy_pass http://127.0.0.1:3010;`
+
+The `3010` value must match `APP_PORT=3010` in `.env.production`.
+
+Enable the site:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/randevigo /etc/nginx/sites-enabled/randevigo
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+After DNS points to the VPS, issue HTTPS with Certbot:
+
+```bash
+sudo certbot --nginx -d beralli.com.tr -d www.beralli.com.tr
+```
+
 ## Important environment note
 
 `NEXT_PUBLIC_*` variables are embedded during `next build`, so they must be
