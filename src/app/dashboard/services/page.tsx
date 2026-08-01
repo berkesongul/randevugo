@@ -14,6 +14,7 @@ export default function ServicesPage() {
   const [name, setName] = useState('');
   const [duration, setDuration] = useState(30);
   const [price, setPrice] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [isActive, setIsActive] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -24,12 +25,14 @@ export default function ServicesPage() {
       setName(service.name);
       setDuration(service.duration_minutes);
       setPrice(service.price ? service.price.toString() : '');
+      setImageUrl(service.image_url || '');
       setIsActive(service.is_active);
     } else {
       setEditingService(null);
       setName('');
       setDuration(30);
       setPrice('');
+      setImageUrl('');
       setIsActive(true);
     }
     setFormError(null);
@@ -60,6 +63,7 @@ export default function ServicesPage() {
           duration_minutes: duration,
           price: parsedPrice,
           is_active: isActive,
+          image_url: imageUrl || null,
         });
       } else {
         await addService({
@@ -67,6 +71,7 @@ export default function ServicesPage() {
           duration_minutes: duration,
           price: parsedPrice,
           is_active: isActive,
+          image_url: imageUrl || null,
         });
       }
       closeModal();
@@ -143,10 +148,10 @@ export default function ServicesPage() {
                   <td>
                     <div className={styles.actions} style={{ justifyContent: 'flex-end' }}>
                       <button className={styles.iconBtn} onClick={() => openModal(service)} title="Düzenle">
-                        ✏️
+                        Düzenle
                       </button>
                       <button className={`${styles.iconBtn} ${styles.delete}`} onClick={() => handleDelete(service.id, service.name)} title="Sil">
-                        🗑️
+                        Sil
                       </button>
                     </div>
                   </td>
@@ -215,6 +220,11 @@ export default function ServicesPage() {
                   onChange={(e) => setIsActive(e.target.checked)}
                 />
                 <label htmlFor="isActive" style={{ margin: 0, color: 'var(--text-primary)' }}>Aktif</label>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="imageUrl">Hizmet görseli URL&apos;si</label>
+                <input id="imageUrl" type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." />
               </div>
 
               {formError && <p style={{ color: '#ff6b6b', fontSize: '0.9rem', marginBottom: '1rem' }}>{formError}</p>}

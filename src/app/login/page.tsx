@@ -12,7 +12,7 @@ import { createClient } from '@/lib/supabase/client';
 import { getSafeRedirectPath } from '@/lib/navigation';
 import styles from './login.module.css';
 
-function LoginForm({ activeTab }: { activeTab: 'client' | 'owner' }) {
+function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -42,48 +42,7 @@ function LoginForm({ activeTab }: { activeTab: 'client' | 'owner' }) {
     if (redirectUrl) {
       router.push(redirectUrl);
     } else if (authData.user) {
-      // Fetch user profile to check role
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', authData.user.id)
-        .single();
-
-      const userRole = profile?.role || 'client';
-
-      if (activeTab === 'client') {
-        // Client tab: always go to customer dashboard
-        if (userRole === 'owner') {
-          // Owner trying to login from client tab — warn them
-          setError('Bu hesap bir işletme hesabıdır. Lütfen "İşletme Girişi" sekmesini kullanın.');
-          setIsLoading(false);
-          // Sign out since we don't want them stuck
-          await supabase.auth.signOut();
-          return;
-        }
-        router.push('/customer');
-      } else {
-        // Owner tab: go to dashboard or setup
-        if (userRole === 'client') {
-          setError('Bu hesap bir müşteri hesabıdır. Lütfen "Müşteri Girişi" sekmesini kullanın.');
-          setIsLoading(false);
-          await supabase.auth.signOut();
-          return;
-        }
-
-        // Check if owner has a tenant
-        const { data: memberships } = await supabase
-          .from('tenant_members')
-          .select('id')
-          .eq('profile_id', authData.user.id)
-          .limit(1);
-
-        if (memberships && memberships.length > 0) {
-          router.push('/dashboard');
-        } else {
-          router.push('/setup');
-        }
-      }
+      router.push('/');
     } else {
       router.push('/');
     }
@@ -133,8 +92,6 @@ function LoginForm({ activeTab }: { activeTab: 'client' | 'owner' }) {
 }
 
 export default function LoginPage() {
-  const [activeTab, setActiveTab] = useState<'client' | 'owner'>('client');
-
   return (
     <main className={styles.container}>
       <div className={styles.bgWrapper}>
@@ -156,25 +113,8 @@ export default function LoginPage() {
           <p>Randevu Yönetim Sistemi</p>
         </div>
 
-        <div className={styles.tabSwitcher}>
-          <button
-            type="button"
-            onClick={() => setActiveTab('client')}
-            className={`${styles.tabBtn} ${activeTab === 'client' ? styles.tabActive : ''}`}
-          >
-            👤 Müşteri Girişi
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('owner')}
-            className={`${styles.tabBtn} ${activeTab === 'owner' ? styles.tabActive : ''}`}
-          >
-            🏪 İşletme Girişi
-          </button>
-        </div>
-
         <Suspense fallback={<div>Yükleniyor...</div>}>
-          <LoginForm activeTab={activeTab} />
+          <LoginForm />
         </Suspense>
 
         <div className={styles.footer}>

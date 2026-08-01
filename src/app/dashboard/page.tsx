@@ -77,28 +77,24 @@ export default function DashboardPage() {
       <section className={styles.statsSection}>
         <div className={styles.statsGrid}>
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>📅</div>
             <div className={styles.statInfo}>
               <span className={styles.statValue}>{todayAppointmentCount}</span>
               <span className={styles.statLabel}>Bugünkü Randevular</span>
             </div>
           </div>
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>💇</div>
             <div className={styles.statInfo}>
               <span className={styles.statValue}>{activeServiceCount}</span>
               <span className={styles.statLabel}>Aktif Hizmetler</span>
             </div>
           </div>
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>👥</div>
             <div className={styles.statInfo}>
               <span className={styles.statValue}>{activeStaffCount}</span>
               <span className={styles.statLabel}>Personel Sayısı</span>
             </div>
           </div>
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>⏳</div>
             <div className={styles.statInfo}>
               <span className={styles.statValue}>{pendingAppointmentCount}</span>
               <span className={styles.statLabel}>Bekleyen Randevular</span>
@@ -128,7 +124,7 @@ export default function DashboardPage() {
                 onClick={handleCopyLink}
                 className={`${styles.copyBtn} ${copied ? styles.copied : ''}`}
               >
-                {copied ? '✓ Kopyalandı!' : 'Kopyala'}
+                {copied ? 'Kopyalandı' : 'Kopyala'}
               </button>
             </div>
           </div>
@@ -139,26 +135,27 @@ export default function DashboardPage() {
       <section className={styles.actionsSection}>
         <h3 className={styles.sectionTitle}>Hızlı İşlemler</h3>
         <div className={styles.grid}>
+          <Link href="/dashboard/calendar" className={styles.card}>
+            <h3>Randevu Takvimi</h3>
+            <p>Haftalık programınızı saat saat görüntüleyin.</p>
+            <span className={styles.cardArrow}>→</span>
+          </Link>
           <Link href="/dashboard/appointments" className={styles.card}>
-            <div className={styles.cardIcon}>📅</div>
             <h3>Randevular</h3>
             <p>Randevularınızı görüntüleyin ve yönetin.</p>
             <span className={styles.cardArrow}>→</span>
           </Link>
           <Link href="/dashboard/services" className={styles.card}>
-            <div className={styles.cardIcon}>💇</div>
             <h3>Hizmetler</h3>
             <p>Sunduğunuz hizmetleri düzenleyin.</p>
             <span className={styles.cardArrow}>→</span>
           </Link>
           <Link href="/dashboard/staff" className={styles.card}>
-            <div className={styles.cardIcon}>👥</div>
             <h3>Personel</h3>
             <p>Ekip üyelerinizi yönetin.</p>
             <span className={styles.cardArrow}>→</span>
           </Link>
           <Link href="/dashboard/settings" className={styles.card}>
-            <div className={styles.cardIcon}>⚙️</div>
             <h3>Ayarlar</h3>
             <p>İşletme ayarlarınızı yapılandırın.</p>
             <span className={styles.cardArrow}>→</span>

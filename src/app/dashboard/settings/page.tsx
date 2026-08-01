@@ -31,6 +31,9 @@ export default function SettingsPage() {
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState('');
   const [description, setDescription] = useState('');
+  const [address, setAddress] = useState('');
+  const [coverImageUrl, setCoverImageUrl] = useState('');
+  const [galleryUrls, setGalleryUrls] = useState('');
   const [timezone, setTimezone] = useState('Europe/Istanbul');
   
   const [isSaving, setIsSaving] = useState(false);
@@ -47,6 +50,9 @@ export default function SettingsPage() {
       setCity(tenant.city || '');
       setPhone(tenant.phone || '');
       setDescription(tenant.description || '');
+      setAddress(tenant.address || '');
+      setCoverImageUrl(tenant.cover_image_url || '');
+      setGalleryUrls((tenant.gallery_urls || []).join('\n'));
       
       if (tenant.settings && typeof tenant.settings === 'object') {
         if (typeof tenant.settings.timezone === 'string') {
@@ -75,6 +81,9 @@ export default function SettingsPage() {
           city: city || null,
           phone: phone || null,
           description: description || null,
+          address: address || null,
+          cover_image_url: coverImageUrl || null,
+          gallery_urls: galleryUrls.split('\n').map((url) => url.trim()).filter(Boolean),
           settings: {
             ...((tenant.settings as object) || {}),
             timezone
@@ -146,7 +155,7 @@ export default function SettingsPage() {
               title="Sadece küçük harf, rakam ve tire (-) kullanılabilir"
             />
             <small style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.25rem' }}>
-              Örn: randevigo.com/<strong>{slug || 'isletme-adi'}</strong>
+              Örn: beralli.com/<strong>{slug || 'isletme-adi'}</strong>
             </small>
           </div>
         </div>
@@ -214,6 +223,10 @@ export default function SettingsPage() {
             placeholder="Müşterilerinize kısaca kendinizden bahsedin..."
           />
         </div>
+        <div className={styles.formGroup}><label htmlFor="address">Adres</label><input id="address" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Açık adres" /></div>
+        <h3 className={styles.cardTitle}>Profil Görselleri</h3>
+        <div className={styles.formGroup}><label htmlFor="coverImageUrl">Kapak görseli URL&apos;si</label><input id="coverImageUrl" type="url" value={coverImageUrl} onChange={(e) => setCoverImageUrl(e.target.value)} placeholder="https://..." /></div>
+        <div className={styles.formGroup}><label htmlFor="galleryUrls">Galeri görselleri (her satıra bir URL)</label><textarea id="galleryUrls" value={galleryUrls} onChange={(e) => setGalleryUrls(e.target.value)} placeholder={'https://...\nhttps://...'} rows={4} /></div>
 
         <div className={styles.actions}>
           <button 

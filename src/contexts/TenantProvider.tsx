@@ -103,6 +103,13 @@ export function TenantProvider({ children }: { children: ReactNode }) {
             name,
             slug,
             owner_id,
+            city,
+            address,
+            phone,
+            description,
+            category,
+            cover_image_url,
+            gallery_urls,
             settings,
             created_at,
             updated_at

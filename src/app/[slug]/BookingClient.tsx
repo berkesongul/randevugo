@@ -173,11 +173,11 @@ export default function BookingClient({
   return (
     <main className={styles.page}>
       <div className={styles.shell}>
-        <Link href="/explore" className={styles.backLink}>
+        <Link href={`/${tenant.slug}`} className={styles.backLink}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="m15 18-6-6 6-6" />
           </svg>
-          İşletmelere dön
+          İşletme profiline dön
         </Link>
 
         <section className={styles.businessHeader}>

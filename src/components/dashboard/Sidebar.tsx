@@ -18,11 +18,13 @@ export default function Sidebar({ onNavigate }: SidebarProps) {
   const { tenant, membership } = useTenant();
 
   const navItems = [
-    { name: 'Genel Bakış', path: '/dashboard', icon: '📊' },
-    { name: 'Randevular', path: '/dashboard/appointments', icon: '📅' },
-    { name: 'Hizmetler', path: '/dashboard/services', icon: '💇' },
-    { name: 'Personel', path: '/dashboard/staff', icon: '👥' },
-    { name: 'Ayarlar', path: '/dashboard/settings', icon: '⚙️' },
+    { name: 'Genel Bakış', path: '/dashboard' },
+    { name: 'Analitik', path: '/dashboard/analytics' },
+    { name: 'Randevu Takvimi', path: '/dashboard/calendar' },
+    { name: 'Randevu Tablosu', path: '/dashboard/appointments' },
+    { name: 'Hizmetler', path: '/dashboard/services' },
+    { name: 'Personel', path: '/dashboard/staff' },
+    { name: 'Ayarlar', path: '/dashboard/settings' },
   ];
 
   async function handleLogout() {
@@ -63,7 +65,6 @@ export default function Sidebar({ onNavigate }: SidebarProps) {
               className={`${styles.navItem} ${isActive ? styles.active : ''}`}
               onClick={onNavigate}
             >
-              <span className={styles.icon}>{item.icon}</span>
               {item.name}
             </Link>
           );
@@ -72,7 +73,7 @@ export default function Sidebar({ onNavigate }: SidebarProps) {
 
       <div className={styles.sidebarFooter}>
         <button onClick={handleLogout} className={styles.logoutBtn}>
-          <span className={styles.icon}>🚪</span> Çıkış Yap
+          Çıkış Yap
         </button>
       </div>
     </aside>

@@ -5,19 +5,13 @@
 // =============================================================================
 
 import { useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../login/login.module.css';
-import type { UserRole } from '@/types/types';
 
 function SignupContent() {
-  const searchParams = useSearchParams();
-  const initialRole = searchParams.get('role');
-  const [role, setRole] = useState<UserRole>(
-    initialRole === 'owner' ? 'owner' : 'client'
-  );
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,7 +32,6 @@ function SignupContent() {
       options: {
         data: {
           full_name: fullName,
-          role,
         },
       },
     });
@@ -109,43 +102,6 @@ function SignupContent() {
             style={{ objectFit: 'contain', height: 'auto' }}
           />
           <p>Yeni Hesap Oluşturun</p>
-        </div>
-
-        <div style={{ display: 'flex', background: 'rgba(0,0,0,0.3)', borderRadius: 'var(--radius-md)', padding: '0.25rem', marginBottom: '2rem' }}>
-          <button
-            type="button"
-            onClick={() => setRole('client')}
-            style={{
-              flex: 1,
-              padding: '0.75rem',
-              background: role === 'client' ? 'var(--accent-primary)' : 'transparent',
-              color: role === 'client' ? 'white' : 'var(--text-secondary)',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-          >
-            Ben Müşteriyim
-          </button>
-          <button
-            type="button"
-            onClick={() => setRole('owner')}
-            style={{
-              flex: 1,
-              padding: '0.75rem',
-              background: role === 'owner' ? 'var(--accent-primary)' : 'transparent',
-              color: role === 'owner' ? 'white' : 'var(--text-secondary)',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-          >
-            Ben İşletmeyim
-          </button>
         </div>
 
         <form onSubmit={handleSignup} className={styles.form}>

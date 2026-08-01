@@ -92,8 +92,6 @@ export default function PublicHeader() {
     router.refresh();
   }
 
-  const accountHref = user?.role === 'owner' ? '/dashboard' : '/customer';
-
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
@@ -144,12 +142,11 @@ export default function PublicHeader() {
                     <strong>{user.name}</strong>
                     <span>{user.email}</span>
                   </div>
-                  <Link href={accountHref} role="menuitem">
-                    Hesabıma git
-                  </Link>
-                  <Link href="/profile/edit" role="menuitem">
-                    Profilimi düzenle
-                  </Link>
+                  <Link href="/profile/edit" role="menuitem">Hesap</Link>
+                  <Link href="/customer" role="menuitem">Favorilerim</Link>
+                  <Link href="/businesses" role="menuitem">İşletmelerim</Link>
+                  <Link href="/requests" role="menuitem">İstekler</Link>
+                  <Link href="/notifications" role="menuitem">Bildirimler</Link>
                   <button type="button" onClick={handleLogout} role="menuitem">
                     Çıkış yap
                   </button>

@@ -13,7 +13,7 @@
 export type UserRole = 'owner' | 'staff' | 'client';
 
 /** Tenant membership role */
-export type MemberRole = 'owner' | 'staff';
+export type MemberRole = 'owner' | 'manager' | 'staff';
 
 /** Appointment lifecycle status */
 export type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed';
@@ -29,6 +29,9 @@ export type Profile = {
   full_name: string | null;
   phone: string | null;
   city: string | null;
+  nickname?: string | null;
+  avatar_url?: string | null;
+  birth_date?: string | null;
   role: UserRole;
   created_at: string;
   updated_at: string;
@@ -45,6 +48,8 @@ export type Tenant = {
   phone: string | null;
   description: string | null;
   category: BusinessCategory | null;
+  cover_image_url?: string | null;
+  gallery_urls?: string[];
   settings: TenantSettings;
   created_at: string;
   updated_at: string;
@@ -67,7 +72,7 @@ export type BusinessCategory =
 /** Safe public business projection returned by catalog RPCs */
 export type PublicTenant = Pick<
   Tenant,
-  'id' | 'name' | 'slug' | 'city' | 'address' | 'phone' | 'description' | 'category'
+  'id' | 'name' | 'slug' | 'city' | 'address' | 'phone' | 'description' | 'category' | 'cover_image_url' | 'gallery_urls'
 >;
 
 /** Safe favorite projection returned by get_my_favorites() */
@@ -99,6 +104,7 @@ export type Service = {
   name: string;
   duration_minutes: number;
   price: number | null;
+  image_url?: string | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -167,11 +173,11 @@ export type TenantInsert = Pick<Tenant, 'name' | 'slug'> &
 
 /** Fields required to create a new service */
 export type ServiceInsert = Pick<Service, 'tenant_id' | 'name' | 'duration_minutes'> &
-  Partial<Pick<Service, 'price' | 'is_active'>>;
+  Partial<Pick<Service, 'price' | 'is_active' | 'image_url'>>;
 
 /** Fields allowed when updating a service */
 export type ServiceUpdate = Partial<
-  Pick<Service, 'name' | 'duration_minutes' | 'price' | 'is_active'>
+  Pick<Service, 'name' | 'duration_minutes' | 'price' | 'is_active' | 'image_url'>
 >;
 
 /** Fields required to create a new staff member */
@@ -236,6 +242,8 @@ export interface Database {
           phone?: string | null;
           description?: string | null;
           category?: BusinessCategory;
+          cover_image_url?: string | null;
+          gallery_urls?: string[];
           settings?: TenantSettings;
           created_at?: string;
           updated_at?: string;
@@ -249,6 +257,8 @@ export interface Database {
           phone?: string | null;
           description?: string | null;
           category?: BusinessCategory;
+          cover_image_url?: string | null;
+          gallery_urls?: string[];
           settings?: TenantSettings;
           updated_at?: string;
         };
@@ -301,6 +311,7 @@ export interface Database {
           name: string;
           duration_minutes: number;
           price?: number | null;
+          image_url?: string | null;
           is_active?: boolean;
           created_at?: string;
           updated_at?: string;
@@ -310,6 +321,7 @@ export interface Database {
           name?: string;
           duration_minutes?: number;
           price?: number | null;
+          image_url?: string | null;
           is_active?: boolean;
           updated_at?: string;
         };

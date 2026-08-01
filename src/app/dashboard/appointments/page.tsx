@@ -201,7 +201,7 @@ export default function AppointmentsPage() {
                   <td>
                     <div className={styles.actions}>
                       <button className={`${styles.iconBtn} ${styles.delete}`} onClick={() => handleDelete(appt.id, appt.client_name)} title="Sil">
-                        🗑️
+                        Sil
                       </button>
                     </div>
                   </td>

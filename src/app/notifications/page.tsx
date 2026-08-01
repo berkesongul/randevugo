@@ -1,0 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+import {useEffect,useState}from 'react';import Link from 'next/link';import PublicHeader from '@/components/PublicHeader/PublicHeader';import {createClient}from '@/lib/supabase/client';
+export default function Notifications(){const [items,setItems]=useState<any[]>([]);const s=createClient() as any;useEffect(()=>{s.from('notifications').select('*').order('created_at',{ascending:false}).then(({data}:any)=>setItems(data||[]))},[s]);return <><PublicHeader/><main style={{maxWidth:900,margin:'3rem auto',padding:'0 1rem'}}><h1>Bildirimler</h1>{items.length?items.map(i=><Link key={i.id} href={i.href||'#'} style={{display:'block',padding:'1rem',border:'1px solid #ddd',marginTop:'1rem',borderRadius:12}}><b>{i.title}</b><p>{i.body}</p></Link>):<p>Henüz bildirimin yok.</p>}</main></>}

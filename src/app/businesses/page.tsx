@@ -1,0 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+import {useEffect,useState}from 'react';import Link from 'next/link';import PublicHeader from '@/components/PublicHeader/PublicHeader';import {createClient}from '@/lib/supabase/client';
+export default function Businesses(){const [items,setItems]=useState<any[]>([]);const s=createClient();useEffect(()=>{s.from('tenant_members').select('role,tenants:tenant_id(name,slug,description)').then(({data})=>setItems(data||[]))},[s]);return <><PublicHeader/><main style={{maxWidth:900,margin:'3rem auto',padding:'0 1rem'}}><h1>İşletmelerim</h1>{items.map(i=><article key={i.tenants?.slug} style={{padding:'1rem',border:'1px solid #ddd',marginTop:'1rem',borderRadius:12}}><b>{i.tenants?.name}</b><p>{i.role}</p><Link href="/dashboard">İşletme paneline git</Link></article>)}</main></>}

@@ -75,7 +75,7 @@ export default function BusinessCard({
               {tenant.city || 'Konum bilgisi yakında'}
             </span>
             <strong>
-              Randevu al
+              Profili incele
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>

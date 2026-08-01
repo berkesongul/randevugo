@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -7,9 +8,16 @@ import {
   type StaffWithProfile,
 } from '@/hooks/useStaff';
 import styles from './staff.module.css';
+import { useTenant } from '@/hooks/useTenant';
+import { createClient } from '@/lib/supabase/client';
 
 export default function StaffPage() {
   const { staffList, isLoading, error, addStaff, updateStaff, deleteStaff, getPotentialStaff } = useStaff();
+  const { tenant, membership } = useTenant();
+  const supabase = createClient() as any;
+  const [nickname, setNickname] = useState('');
+  const [inviteRole, setInviteRole] = useState<'staff' | 'manager'>('staff');
+  const [inviteMessage, setInviteMessage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingStaff, setEditingStaff] = useState<StaffWithProfile | null>(null);
   const [potentialStaffList, setPotentialStaffList] = useState<PotentialStaff[]>([]);
@@ -96,6 +104,15 @@ export default function StaffPage() {
     }
   };
 
+  async function sendInvite(event: React.FormEvent) {
+    event.preventDefault();
+    if (!tenant || !nickname.trim()) return;
+    setInviteMessage(null);
+    const { error: inviteError } = await supabase.rpc('invite_tenant_member', { p_tenant_id: tenant.id, p_nickname: nickname.trim().replace(/^@/, ''), p_role: inviteRole });
+    setInviteMessage(inviteError ? inviteError.message : 'Davet gönderildi. Kullanıcı İstekler bölümünden yanıt verebilir.');
+    if (!inviteError) setNickname('');
+  }
+
   if (isLoading) {
     return (
       <div className={styles.container}>
@@ -112,6 +129,18 @@ export default function StaffPage() {
           <span>+</span> Personel Ekle
         </button>
       </div>
+
+      {(membership?.role === 'owner' || membership?.role === 'manager') && (
+        <form onSubmit={sendInvite} className={styles.staffCard}>
+          <div className={styles.staffInfo}><h3>Kullanıcı davet et</h3><p>Nickname ile personel veya yönetici daveti gönder.</p></div>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <input value={nickname} onChange={(event) => setNickname(event.target.value)} placeholder="nickname" required style={{ flex: 1, minWidth: 180, padding: '0.7rem', border: '1px solid var(--border-subtle)', borderRadius: '8px' }} />
+            <select value={inviteRole} onChange={(event) => setInviteRole(event.target.value as 'staff' | 'manager')} style={{ padding: '0.7rem', border: '1px solid var(--border-subtle)', borderRadius: '8px' }}><option value="staff">Personel</option><option value="manager">Yönetici</option></select>
+            <button className={styles.addBtn} type="submit">Davet gönder</button>
+          </div>
+          {inviteMessage && <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '.85rem' }}>{inviteMessage}</p>}
+        </form>
+      )}
 
       {error && (
         <div style={{ color: '#ff6b6b', background: 'rgba(255, 107, 107, 0.1)', padding: '1rem', borderRadius: '8px' }}>
@@ -150,10 +179,10 @@ export default function StaffPage() {
 
               <div className={styles.actions}>
                 <button className={styles.iconBtn} onClick={() => openModal(staff)} title="Düzenle">
-                  ✏️
+                  Düzenle
                 </button>
                 <button className={`${styles.iconBtn} ${styles.delete}`} onClick={() => handleDelete(staff.id, staff.profiles?.full_name || 'Personel')} title="Sil">
-                  🗑️
+                  Sil
                 </button>
               </div>
             </div>
